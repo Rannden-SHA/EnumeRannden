@@ -1,5 +1,7 @@
 # EnumeRannden 🛠️
 
+[https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/banner.png]
+
 Welcome to **EnumeRannden**, a comprehensive automation script for penetration testing and reconnaissance, created by [Rannden-SHA](https://github.com/Rannden-SHA). This tool is designed to streamline and enhance your penetration testing workflow by integrating a variety of essential tools and functionalities into a single script.
 
 ## Table of Contents
