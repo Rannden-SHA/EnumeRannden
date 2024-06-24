@@ -41,6 +41,26 @@ sudo ./EnumeRannden.sh [options]
 
 **-h** : Show help.
 
+## Configuration File
+### What is the Configuration File?
+The configuration file allows you to save the current state of your session, including IP configuration, detected operating system, open ports, and directory paths. This is particularly useful for pausing and resuming work without losing progress.
+
+### How to Save the Configuration File
+After setting up your session (configuring IP, creating directories, performing scans), the script automatically saves the configuration to a file in the format session_name.conf within the main directory. You can also manually save the configuration at any point by choosing the "Save & Exit" option from the main menu.
+
+### How to Use the Configuration File
+To load a saved session, use the -c option followed by the configuration file name:
+
+```bash
+./EnumeRannden.sh -c path_to_config_file.conf
+```
+This loads all previously saved settings and results, allowing you to seamlessly continue your work from where you left off.
+
+### Why Use the Configuration File?
+Efficiency: Save time by avoiding reconfiguration each session.
+Consistency: Maintain the same environment and settings across multiple sessions.
+Convenience: Easily pause and resume work without losing any progress.
+
 ## Main Menu Options
 ### 1. Configure IP
 Set the target host IP and detect its operating system.
