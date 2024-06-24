@@ -58,7 +58,9 @@ This loads all previously saved settings and results, allowing you to seamlessly
 
 ### Why Use the Configuration File?
 Efficiency: Save time by avoiding reconfiguration each session.
+
 Consistency: Maintain the same environment and settings across multiple sessions.
+
 Convenience: Easily pause and resume work without losing any progress.
 
 ## Main Menu Options
