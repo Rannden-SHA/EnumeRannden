@@ -37,8 +37,8 @@ Run the script with the following command:
 sudo ./EnumeRannden.sh [options]
 ```
 ## Options
-**-c** [file.conf] : Load a configuration file.
-**-h** : Show help.
+-**c** [file.conf] : Load a configuration file.
+-**h** : Show help.
 
 ## Main Menu Options
 ### 1. Configure IP
