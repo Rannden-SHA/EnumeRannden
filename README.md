@@ -115,9 +115,6 @@ Generate reverse shell commands for various programming languages and tools.
 ### 10. Generate Report
 Save the results of the enumeration and scanning to a report file.
 
-![REPORT1](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/report1.png)
-
-![REPORT2](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/report2.png)
 
 ### 11. Check and Install Dependencies
 Check for and install necessary dependencies for the script.
