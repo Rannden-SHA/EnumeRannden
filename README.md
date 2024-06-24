@@ -30,73 +30,72 @@ sudo ./EnumeRannden.sh -h
 ```
 This will guide you through checking and installing the required tools.
 
-Usage
+## Usage
 Run the script with the following command:
 
 ```bash
-Copiar código
-./EnumeRannden.sh [options]
+sudo ./EnumeRannden.sh [options]
 ```
-Options
--c [file.conf] : Load a configuration file.
--h : Show help.
+## Options
+**-c** [file.conf] : Load a configuration file.
+**-h** : Show help.
 
-Main Menu Options
-1. Configure IP
+## Main Menu Options
+### 1. Configure IP
 Set the target host IP and detect its operating system.
 
-2. Create Directories
+### 2. Create Directories
 Create the main working directory and its subdirectories.
 
-3. NMAP Scans
+### 3. NMAP Scans
 Perform different types of NMAP scans to enumerate open ports and services.
 
-4. Web Tools
+### 4. Web Tools
 Use tools like WhatWeb, Nikto, and Gobuster for web service enumeration.
 
-5. OSINT Tools
+### 5. OSINT Tools
 Use tools like theHarvester, Spiderfoot, and FinalRecon for open source intelligence gathering.
 
-6. Exploit Tools
+### 6. Exploit Tools
 Generate payloads and search for exploits using Searchsploit.
 
-7. CheatSheets
+### 7. CheatSheets
 Display various cheat sheets for Linux commands, Windows commands, pivoting, and file transfer techniques.
 
-8. Hash Crack
+### 8. Hash Crack
 Detect hash types and crack hashes using Hashcat.
 
-9. Reverse Shell Generator
+### 9. Reverse Shell Generator
 Generate reverse shell commands for various programming languages and tools.
 
-10. Generate Report
+### 10. Generate Report
 Save the results of the enumeration and scanning to a report file.
 
-11. Check and Install Dependencies
+### 11. Check and Install Dependencies
 Check for and install necessary dependencies for the script.
 
-12. Save & Exit
+### 12. Save & Exit
 Save the current configuration and exit the script.
 
 
-Screenshots
-Main Menu
+## Screenshots
+### Main Menu
 
-NMAP Scans
+### NMAP Scans
 
-Web Tools
+### Web Tools
 
-OSINT Tools
+### OSINT Tools
 
-Exploit Tools
+### Exploit Tools
 
-Reverse Shell Generator
+### Reverse Shell Generator
 
-Hash Crack
+### Hash Crack
 
-Generate Report
+### Generate Report
 
-License
+## License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-🌟 Thank you for using EnumeRannden! Contributions and feedback are welcome. Feel free to fork this repository and submit pull requests.
+**🌟 Thank you for using EnumeRannden! Contributions and feedback are welcome. Feel free to fork this repository and submit pull requests.**
