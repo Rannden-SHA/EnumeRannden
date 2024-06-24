@@ -33,7 +33,11 @@ sudo ./EnumeRannden.sh -h
 This will guide you through checking and installing the required tools.
 
 ## Usage
-Run the script with the following command:
+Run the script with the following commands:
+
+```bash
+chmod +x ./EnumeRannden.sh
+```
 
 ```bash
 sudo ./EnumeRannden.sh [options]
@@ -121,23 +125,6 @@ Check for and install necessary dependencies for the script.
 ### 12. Save & Exit
 Save the current configuration and exit the script.
 
-
-## Screenshots
-### Main Menu
-
-### NMAP Scans
-
-### Web Tools
-
-### OSINT Tools
-
-### Exploit Tools
-
-### Reverse Shell Generator
-
-### Hash Crack
-
-### Generate Report
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
