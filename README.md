@@ -1,6 +1,6 @@
 # EnumeRannden 🛠️
 
-![Banner](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/banner.png)
+![BANNER](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/banner.png)
 
 Welcome to **EnumeRannden**, a comprehensive automation script for penetration testing and reconnaissance, created by [Rannden-SHA](https://github.com/Rannden-SHA). This tool is designed to streamline and enhance your penetration testing workflow by integrating a variety of essential tools and functionalities into a single script.
 
@@ -65,7 +65,12 @@ Consistency: Maintain the same environment and settings across multiple sessions
 
 Convenience: Easily pause and resume work without losing any progress.
 
+![INFO_PANEL](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/info_panel.png)
+
 ## Main Menu Options
+
+![Main](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/main.png)
+
 ### 1. Configure IP
 Set the target host IP and detect its operating system.
 
@@ -75,14 +80,22 @@ Create the main working directory and its subdirectories.
 ### 3. NMAP Scans
 Perform different types of NMAP scans to enumerate open ports and services.
 
+![NMAP](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/nmap.png)
+
 ### 4. Web Tools
 Use tools like WhatWeb, Nikto, and Gobuster for web service enumeration.
+
+![WEB_TOOLS](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/web_tools.png)
 
 ### 5. OSINT Tools
 Use tools like theHarvester, Spiderfoot, and FinalRecon for open source intelligence gathering.
 
+![OSINT_TOOLS](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/osint_tools.png)
+
 ### 6. Exploit Tools
 Generate payloads and search for exploits using Searchsploit.
+
+![EXPLOIT_TOOLS](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/exploit_tools.png)
 
 ### 7. CheatSheets
 Display various cheat sheets for Linux commands, Windows commands, pivoting, and file transfer techniques.
@@ -93,8 +106,14 @@ Detect hash types and crack hashes using Hashcat.
 ### 9. Reverse Shell Generator
 Generate reverse shell commands for various programming languages and tools.
 
+![REVERSE_SHELL_TOOL](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/reverse_shell_tool.png)
+
 ### 10. Generate Report
 Save the results of the enumeration and scanning to a report file.
+
+![REPORT1](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/report1.png)
+
+![REPORT2](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/report2.png)
 
 ### 11. Check and Install Dependencies
 Check for and install necessary dependencies for the script.
