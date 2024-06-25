@@ -25,10 +25,15 @@ Welcome to **EnumeRannden**, a comprehensive automation script for penetration t
 
 ## Installation
 
+Download the script:
+
+```bash
+wget https://github.com/Rannden-SHA/EnumeRannden/blob/main/EnumeRannden.sh
+```
 To install the necessary dependencies, run:
 
 ```bash
-sudo ./EnumeRannden.sh -h
+./EnumeRannden.sh -h
 ```
 This will guide you through checking and installing the required tools.
 
@@ -40,7 +45,7 @@ chmod +x ./EnumeRannden.sh
 ```
 
 ```bash
-sudo ./EnumeRannden.sh [options]
+./EnumeRannden.sh [options]
 ```
 ## Options
 **-c** [file.conf] : Load a configuration file.
