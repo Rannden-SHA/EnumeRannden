@@ -30,19 +30,24 @@ Download the script:
 ```bash
 wget https://github.com/Rannden-SHA/EnumeRannden/blob/main/EnumeRannden.sh
 ```
+Give execution permisions:
+
+```bash
+chmod +x ./EnumeRannden.sh
+```
 To install the necessary dependencies, run:
 
 ```bash
 ./EnumeRannden.sh -h
 ```
 This will guide you through checking and installing the required tools.
+Or run the script and select the option 11:
+```bash
+./EnumeRannden.sh
+```
 
 ## Usage
-Run the script with the following commands:
-
-```bash
-chmod +x ./EnumeRannden.sh
-```
+Run the script with the following command:
 
 ```bash
 ./EnumeRannden.sh [options]
