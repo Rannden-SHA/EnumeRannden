@@ -11,8 +11,7 @@ Welcome to **EnumeRannden**, a comprehensive automation script for penetration t
 3. [Usage](#usage)
 4. [Options](#options)
 5. [Main Menu Options](#main-menu-options)
-6. [Screenshots](#screenshots)
-7. [License](#license)
+6. [License](#license)
 
 ## Features
 
