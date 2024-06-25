@@ -30,7 +30,7 @@ Download the script:
 ```bash
 wget https://github.com/Rannden-SHA/EnumeRannden/blob/main/EnumeRannden.sh
 ```
-Give execution permisions:
+Give execution permissions:
 
 ```bash
 chmod +x ./EnumeRannden.sh
