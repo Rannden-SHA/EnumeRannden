@@ -42,7 +42,7 @@ To install the necessary dependencies, run:
 ```
 This will guide you through checking and installing the required tools.
 
-Or run the script and select the option 11:
+Or run the script and select the option 11):
 ```bash
 ./EnumeRannden.sh
 ```
