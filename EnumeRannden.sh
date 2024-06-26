@@ -8,7 +8,7 @@ HISTFILE=~/.bash_history
 HISTSIZE=1000
 HISTFILESIZE=2000
 
-# Load de commands history
+# Load the commands history
 history -r
 
 # Save the commands history on exit
@@ -31,6 +31,7 @@ OPEN_PORTS=""
 BASE_DIR=""
 ENUM_DIR=""
 EXPLOITS_DIR=""
+CREATE_FILES=""
 # FILE_PATH="/home/kali/Documents/plantilla.txt"
 last_output=""
 hora=$(date +"%m-%d-%H:%M")
@@ -177,6 +178,7 @@ detect_os() {
 
 # Function to create directories
 create_directories() {
+
     show_info_panel
     read -e -p "Enter the name of the main directory: " BASE_DIR
     ENUM_DIR="$BASE_DIR/enum"
@@ -188,7 +190,6 @@ create_directories() {
 
     echo -e "${BLUE}[+] Creating subdirectories: enum, loot, privesc, exploits, osint and tools${NC}"
     mkdir -p "$BASE_DIR/enum" "$BASE_DIR/loot" "$BASE_DIR/privesc" "$BASE_DIR/exploits" "$BASE_DIR/osint" "$BASE_DIR/tools"
-
     # Copy file
     #if [ -f "$FILE_PATH" ]; then
        #echo -e "${BLUE}[+] Copying ${FILE_PATH} to ${ENUM_DIR}${NC}"
@@ -1837,7 +1838,11 @@ main_menu() {
 
 # Show banner at script start
 show_banner
-create_directories
+
+# Check if script is run without -c argument
+if [[ "$1" != "-c" ]]; then
+    create_directories
+fi
 
 # Check the arguments
 while getopts ":c:h" opt; do
