@@ -147,7 +147,8 @@ show_help() {
 # IP setting function
 set_ip() {
     show_info_panel
-    read -e -p "Enter the Host IP: " IP
+    read -e -p "Enter the Target IP or URL: " IP
+    OPEN_PORTS="" # Clear OPEN_PORTS whenever IP is set
     clear
     detect_os
 }
@@ -1084,19 +1085,19 @@ crack_with_hashcat() {
     for hash_name in "${!hash_modes[@]}"; do
         mode=${hash_modes[$hash_name]}
         clear
-        echo -e "${VIOLET}\n\n\n=============================================================================="
+        echo -e "${VIOLET}\n\n\n=========================================================================="
         echo -e "================== ${YELLOW}Testing mode Hashcat: $hash_name (${mode}) ${VIOLET}=================="
-        echo -e "==============================================================================${NC}"
+        echo -e "==========================================================================${NC}"
         echo "$hash" > hash.txt
         hashcat -m $mode -a 0 hash.txt $dict_option2 -o "$BASE_DIR/loot/$output_file"
         result=$(cat "$BASE_DIR/loot/$output_file")
         if [[ -n "$result" ]]; then
             hash_detected=true
-            echo -e "${GREEN}>>>>>>>>>>>>>>>>>>>>>>>>>>>> PASSWORD <<<<<<<<<<<<<<<<<<<<<<<<<<<${NC}"
+            echo -e "${GREEN}>>>>>>>>>>>>>>>>>>>>>>>>>>>> ${RED}PASSWORD ${GREEN}<<<<<<<<<<<<<<<<<<<<<<<<<<<${NC}"
             echo -e "${YELLOW}[+] Decrypted hash: ${result}${NC}"
             mv "$BASE_DIR/loot/$output_file" "$BASE_DIR/loot/cracked_$output_file.txt"
             check_and_update_log "$hash" "$result"
-            echo -e "${GREEN}>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> o <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<${NC}"
+            echo -e "${GREEN}>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ${RED}o ${GREEN}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<${NC}"
             break
         fi
     done
