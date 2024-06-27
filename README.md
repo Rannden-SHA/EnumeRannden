@@ -60,7 +60,7 @@ The first time the script is executed, it will set up a symlink allowing future 
 For future executions just run>
 
 ```bash
-./enumerannden [options]
+enumerannden [options]
 ```
 
 ## Options
