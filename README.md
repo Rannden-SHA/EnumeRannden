@@ -21,6 +21,9 @@ Welcome to **EnumeRannden**, a comprehensive automation script for penetration t
 - **Hash Cracking**: Detect and crack hashes using Hashcat.
 - **Cheatsheets**: Access cheatsheets for common commands and techniques.
 - **Dependency Management**: Check and install necessary dependencies automatically.
+- **Nuclei Compatibility**: Integrated with Nuclei for advanced OSINT scanning.
+- **Improved UI**: Enhanced graphical interface with system and IP information.
+- **Download Tools**: New section for downloading tools like Socat, Chisel, Ligolo, WinPEAS, and LinPEAS in various versions.
 
 ## Installation
 
@@ -41,7 +44,7 @@ To install the necessary dependencies, run:
 ```
 This will guide you through checking and installing the required tools.
 
-Or run the script and select the option 11):
+Or run the script and select the option 12):
 ```bash
 ./EnumeRannden.sh
 ```
@@ -126,10 +129,14 @@ Generate reverse shell commands for various programming languages and tools.
 Save the results of the enumeration and scanning to a report file.
 
 
-### 11. Check and Install Dependencies
+### 11. Download Tools
+Section for downloading tools like Socat, Chisel, Ligolo, WinPEAS, and LinPEAS in various versions.
+
+
+### 12. Check and Install Dependencies
 Check for and install necessary dependencies for the script.
 
-### 12. Save & Exit
+### 13. Save & Exit
 Save the current configuration and exit the script.
 
 
