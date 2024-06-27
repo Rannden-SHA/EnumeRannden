@@ -24,7 +24,8 @@ Welcome to **EnumeRannden**, a comprehensive automation script for penetration t
 - **Nuclei Compatibility**: Integrated with Nuclei for advanced OSINT scanning.
 - **Improved UI**: Enhanced graphical interface with system and IP information.
 - **Download Tools**: New section for downloading tools like Socat, Chisel, Ligolo, WinPEAS, and LinPEAS in various versions.
-- - **Added to the Path**: The first time the script is executed, it will set up a symlink allowing future executions from anywhere by typing **enumerannden**.
+- **Added to the Path**: The first time the script is executed, it will set up a symlink allowing future executions from anywhere by typing **enumerannden**.
+- **Generate a PDF Report**: Now it generates a .txt report and a .pdf report (More aesthetic)
 
 ## Installation
 
