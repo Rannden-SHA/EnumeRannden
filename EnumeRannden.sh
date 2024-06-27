@@ -1,5 +1,25 @@
 #!/bin/bash
 
+# Function to create a symlink in /usr/local/bin
+create_symlink() {
+    script_path=$(realpath "$0")
+    symlink_path="/usr/local/bin/enumerannden"
+
+    if [ ! -L "$symlink_path" ]; then
+        sudo ln -s "$script_path" "$symlink_path"
+	echo -e "${GREEN}[+] Symlink created: You can now run the script from anywhere using 'enumerannden'.${NC}"
+    else
+    	echo -e "${GREEN}[+] Symlink already exists: You can run the script using 'enumerannden'.${NC}"
+    fi
+}
+
+# Check if script is run for the first time by checking if the symlink exists
+symlink_path="/usr/local/bin/enumerannden"
+if [ ! -L "$symlink_path" ]; then
+    echo -e "${YELLOW}[+] First time setup: Creating symlink on the PATH for run the script from anywhere using 'enumerannden' ...${NC}"
+    create_symlink
+fi
+
 # Line edition and moving using arrows
 set -o vi
 
