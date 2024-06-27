@@ -137,7 +137,7 @@ Generate reverse shell commands for various programming languages and tools.
 ### 10. Generate Report
 Save the results of the enumeration and scanning to a report file.
 
-![TEST_REPORT](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/test_report.png)
+![TEST_REPORT](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/report_test.png)
 
 ### 11. Download Tools
 Section for downloading tools like Socat, Chisel, Ligolo, WinPEAS, and LinPEAS in various versions.
