@@ -144,6 +144,8 @@ Save the results of the enumeration and scanning to a report file.
 
 ![TEST_REPORT](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/report_test.png)
 
+Test_Report: https://github.com/Rannden-SHA/EnumeRannden/blob/main/report_test.pdf
+
 ### 12. Check and Install Dependencies
 Check for and install necessary dependencies for the script.
 
