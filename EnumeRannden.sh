@@ -385,6 +385,11 @@ save_report() {
     fi
 
     report_file="${BASE_DIR}/report_${BASE_DIR##*/}.txt"
+    pdf_report_file="${BASE_DIR}/report_${BASE_DIR##*/}.pdf"
+    html_report="/tmp/report.html"
+    cover_image="path/to/your/cover_image.jpg"  # Update this path to your cover image
+
+    # Save TXT Report
     {
         echo -e "${CYAN}"
         echo "                                 ========================================================"
@@ -468,7 +473,78 @@ save_report() {
         echo -e "${CYAN}----------------------------------------------------------------------------------------------------------${NC}\n\n"
     } > "$report_file"
 
-    echo -e "${BLUE}[+] Report saved in ${report_file}${NC}"
+    # Save HTML Report with styles and emojis
+    {
+        echo "<html>"
+        echo "<head>"
+        echo "<title>EnumeRannden Report</title>"
+        echo "<style>"
+        echo "body { font-family: Arial, sans-serif; margin: 40px; }"
+        echo "h1 { color: #4CAF50; text-align: center; }"
+        echo "h2 { color: #2196F3; }"
+        echo "h3 { color: #FFC107; }"
+        echo "p { font-size: 14px; }"
+        echo "pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }"
+        echo ".info-panel { background: #e3f2fd; padding: 20px; border-radius: 5px; margin-bottom: 20px; }"
+        echo ".info-panel p { margin: 5px 0; }"
+        echo ".cover-image { width: 100%; height: auto; margin-bottom: 20px; }"
+        echo "</style>"
+        echo "</head>"
+        echo "<body>"
+        echo "<img src='${cover_image}' class='cover-image' alt='Cover Image'>"
+        echo "<h1>EnumeRannden Report</h1>"
+        echo "<div class='info-panel'>"
+        echo "<h2>Information Panel</h2>"
+        echo "<p><strong>IP:</strong> ${IP}</p>"
+        echo "<p><strong>Host's Operating System:</strong> ${OS}</p>"
+        echo "<p><strong>Open Ports:</strong> ${OPEN_PORTS}</p>"
+        echo "<p><strong>Main Directory:</strong> ${BASE_DIR}</p>"
+        echo "</div>"
+
+        echo "<h2>NMAP Results</h2>"
+        for file in "${ENUM_DIR}/nmap_"*.txt; do
+            [ -e "$file" ] && echo "<h3>File: ${file}</h3><pre>$(cat "$file")</pre>"
+        done
+
+        echo "<h2>WhatWeb Results</h2>"
+        for file in "${ENUM_DIR}/whatweb_"*.txt; do
+            [ -e "$file" ] && echo "<h3>File: ${file}</h3><pre>$(cat "$file")</pre>"
+        done
+
+        echo "<h2>Nikto Results</h2>"
+        for file in "${ENUM_DIR}/nikto_"*.txt; do
+            [ -e "$file" ] && echo "<h3>File: ${file}</h3><pre>$(cat "$file")</pre>"
+        done
+
+        echo "<h2>Gobuster Results</h2>"
+        [ -e "${ENUM_DIR}/gobuster.txt" ] && echo "<h3>File: ${ENUM_DIR}/gobuster.txt</h3><pre>$(cat "${ENUM_DIR}/gobuster.txt")</pre>"
+
+        echo "<h2>Hash Cracking Results</h2>"
+        for file in "${BASE_DIR}/loot/cracked_"*.txt; do
+            [ -e "$file" ] && echo "<h3>File: ${file}</h3><pre>$(cat "$file")</pre>"
+        done
+
+        echo "<h2>Payloads Generated</h2>"
+        for file in "${BASE_DIR}/exploits/"*; do
+            [ -e "$file" ] && echo "<h3>File: ${file}</h3>"
+        done
+
+        echo "<h2>OSINT Results</h2>"
+        for file in "${BASE_DIR}/osint/"*; do
+            [ -e "$file" ] && echo "<h3>File: ${file}</h3><pre>$(cat "$file")</pre>"
+        done
+
+        echo "</body>"
+        echo "</html>"
+    } > "$html_report"
+
+    # Convert HTML to PDF
+    wkhtmltopdf "$html_report" "$pdf_report_file"
+
+    # Clean up the temporary HTML file
+    rm "$html_report"
+
+    echo -e "${BLUE}[+] Report saved in ${report_file} and ${pdf_report_file}${NC}"
 }
 
 # Function to load results from configuration file
@@ -1784,7 +1860,7 @@ osint_nuclei() {
 }
 
 check_install_dependencies() {
-    dependencies=("nmap" "whatweb" "nikto" "gobuster" "hashcat" "python3-pip" "finalrecon" "theharvester" "recon-ng" "nuclei")
+    dependencies=("nmap" "whatweb" "nikto" "gobuster" "hashcat" "python3-pip" "finalrecon" "theharvester" "recon-ng" "nuclei" "wkhtmltopdf")
 
     echo -e "${BLUE}[+] Checking and installing dependencies...${NC}"
 
