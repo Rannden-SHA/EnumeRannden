@@ -57,7 +57,7 @@ Run the script with the following command:
 ./EnumeRannden.sh [options]
 ```
 The first time the script is executed, it will set up a symlink allowing future executions from anywhere by typing **enumerannden**.
-For future executions just run>
+For future executions just run:
 
 ```bash
 enumerannden [options]
