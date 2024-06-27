@@ -491,7 +491,7 @@ save_report() {
         echo "</style>"
         echo "</head>"
         echo "<body>"
-        echo "<img src='${cover_image}' class='cover-image' alt='Cover Image'>"
+        echo "<img src='https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/banner.png?raw=true' class='cover-image' alt='Cover Image'>" # Link to the image
         echo "<h1>EnumeRannden Report</h1>"
         echo "<div class='info-panel'>"
         echo "<h2>Information Panel</h2>"
