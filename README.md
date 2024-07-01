@@ -26,6 +26,13 @@ Welcome to **EnumeRannden**, a comprehensive automation script for penetration t
 - **Download Tools**: New section for downloading tools like Socat, Chisel, Ligolo, WinPEAS, and LinPEAS in various versions.
 - **Added to the Path**: The first time the script is executed, it will set up a symlink allowing future executions from anywhere by typing **enumerannden**.
 - **Generate a PDF Report**: Now it generates a .txt report and a .pdf report (More aesthetic)
+- **Active Directory Tools**: Enumerate Active Directory
+- **Post-Explotation**:Manage a reverse shell and enter preset commands for different outputs
+- **Port Knocking**: Method of externally opening ports on a firewall by generating a connection attempt on a set of prespecified closed ports
+- **Brute Forece Attack**: Hydra
+- **Subdomain Scanner**: On Web Tools Submenu
+- **Create a custom password dictionary**: through a previous questionnaire.
+- **Fixed some bugs**
 
 ## Installation
 
@@ -113,43 +120,58 @@ Use tools like WhatWeb, Nikto, and Gobuster for web service enumeration.
 
 ![WEB_TOOLS](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/web_tools.png)
 
-### 5. OSINT Tools
+### 5. Brute Force Attacks
+Brute forces a selected protocol.
+
+### 6. Create a persolaizated passwords dictionary
+Create a custom password dictionary through a previous questionnaire.
+
+### 7. Port Knocking
+Method of externally opening ports on a firewall by generating a connection attempt on a set of prespecified closed ports.
+
+### 8. OSINT Tools
 Use tools like theHarvester, Spiderfoot, and FinalRecon for open source intelligence gathering.
 
 ![OSINT_TOOLS](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/osint_tools.png)
 
-### 6. Exploit Tools
+### 9. Exploit Tools
 Generate payloads and search for exploits using Searchsploit.
 
 ![EXPLOIT_TOOLS](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/exploit_tools.png)
 
-### 7. CheatSheets
+### 10. CheatSheets
 Display various cheat sheets for Linux commands, Windows commands, pivoting, and file transfer techniques.
 
-### 8. Hash Crack
+### 11. Hash Crack
 Detect hash types and crack hashes using Hashcat.
 
-### 9. Reverse Shell Generator
+### 12. Active Directory Tools
+Enumerate Active Directory.
+
+### 13. Reverse Shell Generator
 Generate reverse shell commands for various programming languages and tools.
 
 ![REVERSE_SHELL_TOOL](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/reverse_shell_tool.png)
 
-### 10. Download Tools
+### 14. Post Explotation
+Manage a reverse shell and enter preset commands for different outputs.
+
+### 15. Download Tools
 Section for downloading tools like Socat, Chisel, Ligolo, WinPEAS, and LinPEAS in various versions.
 
 ![DOWNLOAD_TOOLS](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/download_tools.png)
 
-### 11. Generate Report
+### 16. Generate Report
 Save the results of the enumeration and scanning to a report file.
 
 ![TEST_REPORT](https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/report_test.png)
 
 Test_Report: https://github.com/Rannden-SHA/EnumeRannden/blob/main/report_test.pdf
 
-### 12. Check and Install Dependencies
+### 17. Check and Install Dependencies
 Check for and install necessary dependencies for the script.
 
-### 13. Save & Exit
+### 18. Save & Exit
 Save the current configuration and exit the script.
 
 
