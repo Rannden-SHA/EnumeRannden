@@ -1764,6 +1764,11 @@ exploit_tools_menu() {
                 searchsploit "$search_term" > "${BASE_DIR}/exploits/searchsploit_results_${search_term}.txt"
                 last_output=$(cat "${BASE_DIR}/exploits/searchsploit_results_${search_term}.txt")
                 cat "${BASE_DIR}/exploits/searchsploit_results_${search_term}.txt"
+                read -e -p "You want to see an exploit? (y/n)): " see_exploit
+                if [ "$see_exploit" == "y" ]; then
+                    read -e -p "Enter the exploit number: " exploit_number
+                    searchsploit -x $exploit_number
+                fi
                 ;;
             3)
                 clear
@@ -2436,7 +2441,7 @@ check_install_dependencies() {
             echo -e "${YELLOW}[-] $dep is not installed. Installing...${NC}"
             if [[ $dep == "theharvester" ]]; then
                 pip install theHarvester
-            elif [[ $dep == "nuclei" || $dep == "finalrecon" || $dep == "tmux" ]]; then
+            elif [[ $dep == "nuclei" || $dep == "finalrecon" || $dep == "tmux" || $dep == "sublist3r" ]]; then
                 sudo apt install -y $dep
             else
                 sudo apt-get install -y $dep
