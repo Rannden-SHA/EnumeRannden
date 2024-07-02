@@ -210,7 +210,7 @@ create_directories() {
     echo -e "${BLUE}[+] Creating subdirectories: enum, loot, privesc, exploits, osint and tools${NC}"
     mkdir -p "$BASE_DIR/enum" "$BASE_DIR/loot" "$BASE_DIR/privesc" "$BASE_DIR/exploits" "$BASE_DIR/osint" "$BASE_DIR/tools"
     
-    # Search and copy the obsidian_enumeration directory
+    # Search and copy the obsidian_notes directory
 
     read -e -p "Do you want to search and copy the obsidian_notes directory? (y/n): " copy_choice
     if [[ "$copy_choice" == "y" || "$copy_choice" == "Y" ]]; then
