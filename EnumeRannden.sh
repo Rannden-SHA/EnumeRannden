@@ -212,7 +212,7 @@ create_directories() {
     
     # Search and copy the obsidian_enumeration directory
 
-    read -e -p "Do you want to search and copy the obsidian_enumeration directory? (y/n): " copy_choice
+    read -e -p "Do you want to search and copy the obsidian_notes directory? (y/n): " copy_choice
     if [[ "$copy_choice" == "y" || "$copy_choice" == "Y" ]]; then
         echo -e "${BLUE}[+] Searching for obsidian_notes directory...${NC}"
         DIR_PATH=$(find / -type d -name "obsidian_notes" 2>/dev/null | head -n 1)
