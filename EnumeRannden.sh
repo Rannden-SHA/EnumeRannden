@@ -52,7 +52,6 @@ BASE_DIR=""
 ENUM_DIR=""
 EXPLOITS_DIR=""
 CREATE_FILES=""
-# FILE_PATH="/home/kali/Documents/plantilla.txt"
 last_output=""
 hora=$(date +"%m-%d-%H:%M")
 
@@ -210,13 +209,23 @@ create_directories() {
 
     echo -e "${BLUE}[+] Creating subdirectories: enum, loot, privesc, exploits, osint and tools${NC}"
     mkdir -p "$BASE_DIR/enum" "$BASE_DIR/loot" "$BASE_DIR/privesc" "$BASE_DIR/exploits" "$BASE_DIR/osint" "$BASE_DIR/tools"
-    # Copy file
-    #if [ -f "$FILE_PATH" ]; then
-       #echo -e "${BLUE}[+] Copying ${FILE_PATH} to ${ENUM_DIR}${NC}"
-       #cp "$FILE_PATH" "$ENUM_DIR"
-    #else
-        #echo -e "${RED}[-] The file ${FILE_PATH} doesn't exists.${NC}"
-    #fi
+    
+    # Search and copy the obsidian_enumeration directory
+
+    read -e -p "Do you want to search and copy the obsidian_enumeration directory? (y/n): " copy_choice
+    if [[ "$copy_choice" == "y" || "$copy_choice" == "Y" ]]; then
+        echo -e "${BLUE}[+] Searching for obsidian_notes directory...${NC}"
+        DIR_PATH=$(find / -type d -name "obsidian_notes" 2>/dev/null | head -n 1)
+
+        if [ -d "$DIR_PATH" ]; then
+            echo -e "${BLUE}[+] Found ${DIR_PATH} - Copying to ${BASE_DIR}${NC}"
+            cp -r "$DIR_PATH" "$BASE_DIR"
+        else
+            echo -e "${RED}[-] The obsidian_notes directory was not found.${NC}"
+        fi
+    else
+        echo -e "${BLUE}[+] Skipping the copy of obsidian_notes directory.${NC}"
+    fi
 }
 
 # Function to scan ports with NMAP
