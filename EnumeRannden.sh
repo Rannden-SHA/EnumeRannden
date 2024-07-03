@@ -554,6 +554,7 @@ save_report() {
     rm "$html_report"
 
     echo -e "${BLUE}[+] Report saved in ${report_file} and ${pdf_report_file}${NC}"
+    open ${pdf_report_file}
 }
 
 # Function to load results from configuration file
@@ -1899,6 +1900,7 @@ check_port_445() {
 
 # Function to show Active Directory tools
 show_ad_tools() {
+    show_info_panel
     check_port_445
     if [ $? -ne 0 ]; then
         return
@@ -1920,7 +1922,8 @@ show_ad_tools() {
         echo -e "12) LDAP Enumeration"
         echo -e "13) Back to Main Menu"
         read -e -p "Select an option: " ad_option
-
+        clear
+	
         case $ad_option in
             1) run_bloodhound ;;
             2) run_ldapsearch ;;
@@ -2191,6 +2194,7 @@ ldap_enumeration() {
 
 # Function for Hydra Brute Force Attack
 brute_force_attack() {
+    show_info_panel
     read -e -p "Enter the target IP: " target_ip
 
     echo -e "${BLUE}[+] Select the protocol to brute force:${NC}"
@@ -2272,6 +2276,7 @@ brute_force_attack() {
 
 # Function for Port Knocking
 port_knocking() {
+    show_info_panel
     read -e -p "Enter the IP address to knock: " ip
     read -e -p "Enter the sequence of ports (example: 3000,4000,5000): " ports
     echo -e "${YELLOW}[+] Port knocking on $ip with ports $ports...${NC}"
