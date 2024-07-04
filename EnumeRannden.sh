@@ -482,79 +482,101 @@ save_report() {
         echo -e "${CYAN}----------------------------------------------------------------------------------------------------------${NC}\n\n"
     } > "$report_file"
 
-    # Save HTML Report with styles and emojis
-    {
-        echo "<html>"
-        echo "<head>"
-        echo "<title>EnumeRannden Report</title>"
-        echo "<style>"
-        echo "body { font-family: Arial, sans-serif; margin: 40px; }"
-        echo "h1 { color: #4CAF50; text-align: center; }"
-        echo "h2 { color: #2196F3; }"
-        echo "h3 { color: #FFC107; }"
-        echo "p { font-size: 14px; }"
-        echo "pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }"
-        echo ".info-panel { background: #e3f2fd; padding: 20px; border-radius: 5px; margin-bottom: 20px; }"
-        echo ".info-panel p { margin: 5px 0; }"
-        echo ".cover-image { width: 100%; height: auto; margin-bottom: 20px; }"
-        echo "</style>"
-        echo "</head>"
-        echo "<body>"
-        echo "<img src='https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/banner.png?raw=true' class='cover-image' alt='Cover Image'>" # Link to the image
-        echo "<h1>EnumeRannden Report</h1>"
-        echo "<div class='info-panel'>"
-        echo "<h2>Information Panel</h2>"
-        echo "<p><strong>IP:</strong> ${IP}</p>"
-        echo "<p><strong>Host's Operating System:</strong> ${OS}</p>"
-        echo "<p><strong>Open Ports:</strong> ${OPEN_PORTS}</p>"
-        echo "<p><strong>Main Directory:</strong> ${BASE_DIR}</p>"
-        echo "</div>"
+    # Save HTML Report with styles
+    # Function to wrap long lines manually
+wrap_text() {
+    local file=$1
+    local width=$2
+    fold -s -w $width "$file"
+}
 
-        echo "<h2>NMAP Results</h2>"
-        for file in "${ENUM_DIR}/nmap_"*.txt; do
-            [ -e "$file" ] && echo "<h3>File: ${file}</h3><pre>$(cat "$file")</pre>"
-        done
+# Save HTML Report with styles and emojis
+{
+    echo "<html>"
+    echo "<head>"
+    echo "<title>EnumeRannden Report</title>"
+    echo "<style>"
+    echo "body { font-family: Arial, sans-serif; margin: 40px; background-color: white; }"
+    echo "h1 { color: #4CAF50; text-align: center; }"
+    echo "h2 { color: #2196F3; }"
+    echo "h3 { color: #FFC107; }"
+    echo "p { font-size: 14px; }"
+    echo "pre { background: #f4f4f4; padding: 10px; border-radius: 5px; white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; }"
+    echo ".info-panel { background: #e3f2fd; padding: 20px; border-radius: 5px; margin-bottom: 20px; }"
+    echo ".info-panel p { margin: 5px 0; }"
+    echo ".cover-image { width: 100%; height: auto; margin-bottom: 20px; }"
+    echo "</style>"
+    echo "</head>"
+    echo "<body>"
+    echo "<img src='https://github.com/Rannden-SHA/EnumeRannden/blob/main/Images/banner.png?raw=true' class='cover-image' alt='Cover Image'>" # Link to the image
+    echo "<h1>EnumeRannden Report</h1>"
+    echo "<div class='info-panel'>"
+    echo "<h2>Information Panel</h2>"
+    echo "<p><strong>IP:</strong> ${IP}</p>"
+    echo "<p><strong>Host's Operating System:</strong> ${OS}</p>"
+    echo "<p><strong>Open Ports:</strong> ${OPEN_PORTS}</p>"
+    echo "<p><strong>Main Directory:</strong> ${BASE_DIR}</p>"
+    echo "</div>"
 
-        echo "<h2>WhatWeb Results</h2>"
-        for file in "${ENUM_DIR}/whatweb_"*.txt; do
-            [ -e "$file" ] && echo "<h3>File: ${file}</h3><pre>$(cat "$file")</pre>"
-        done
+    echo "<h2>NMAP Results</h2>"
+    for file in "${ENUM_DIR}/nmap_"*.txt; do
+        if [ -e "$file" ]; then
+            echo "<h3>File: ${file}</h3><pre>$(wrap_text "$file" 80)</pre>"
+        fi
+    done
 
-        echo "<h2>Nikto Results</h2>"
-        for file in "${ENUM_DIR}/nikto_"*.txt; do
-            [ -e "$file" ] && echo "<h3>File: ${file}</h3><pre>$(cat "$file")</pre>"
-        done
+    echo "<h2>WhatWeb Results</h2>"
+    for file in "${ENUM_DIR}/whatweb_"*.txt; do
+        if [ -e "$file" ]; then
+            echo "<h3>File: ${file}</h3><pre>$(wrap_text "$file" 80)</pre>"
+        fi
+    done
 
-        echo "<h2>Gobuster Results</h2>"
-        [ -e "${ENUM_DIR}/gobuster.txt" ] && echo "<h3>File: ${ENUM_DIR}/gobuster.txt</h3><pre>$(cat "${ENUM_DIR}/gobuster.txt")</pre>"
+    echo "<h2>Nikto Results</h2>"
+    for file in "${ENUM_DIR}/nikto_"*.txt; do
+        if [ -e "$file" ]; then
+            echo "<h3>File: ${file}</h3><pre>$(wrap_text "$file" 80)</pre>"
+        fi
+    done
 
-        echo "<h2>Hash Cracking Results</h2>"
-        for file in "${BASE_DIR}/loot/cracked_"*.txt; do
-            [ -e "$file" ] && echo "<h3>File: ${file}</h3><pre>$(cat "$file")</pre>"
-        done
+    echo "<h2>Gobuster Results</h2>"
+    if [ -e "${ENUM_DIR}/gobuster.txt" ]; then
+        echo "<h3>File: ${ENUM_DIR}/gobuster.txt</h3><pre>$(wrap_text "${ENUM_DIR}/gobuster.txt" 80)</pre>"
+    fi
 
-        echo "<h2>Payloads Generated</h2>"
-        for file in "${BASE_DIR}/exploits/"*; do
-            [ -e "$file" ] && echo "<h3>File: ${file}</h3>"
-        done
+    echo "<h2>Hash Cracking Results</h2>"
+    for file in "${BASE_DIR}/loot/cracked_"*.txt; do
+        if [ -e "$file" ]; then
+            echo "<h3>File: ${file}</h3><pre>$(wrap_text "$file" 80)</pre>"
+        fi
+    done
 
-        echo "<h2>OSINT Results</h2>"
-        for file in "${BASE_DIR}/osint/"*; do
-            [ -e "$file" ] && echo "<h3>File: ${file}</h3><pre>$(cat "$file")</pre>"
-        done
+    echo "<h2>Payloads Generated</h2>"
+    for file in "${BASE_DIR}/exploits/"*; do
+        if [ -e "$file" ]; then
+            echo "<h3>File: ${file}</h3>"
+        fi
+    done
 
-        echo "</body>"
-        echo "</html>"
-    } > "$html_report"
+    echo "<h2>OSINT Results</h2>"
+    for file in "${BASE_DIR}/osint/"*; do
+        if [ -e "$file" ]; then
+            echo "<h3>File: ${file}</h3><pre>$(wrap_text "$file" 80)</pre>"
+        fi
+    done
 
-    # Convert HTML to PDF
-    wkhtmltopdf "$html_report" "$pdf_report_file"
+    echo "</body>"
+    echo "</html>"
+} > "$html_report"
 
-    # Clean up the temporary HTML file
-    rm "$html_report"
+# Convert HTML to PDF
+wkhtmltopdf "$html_report" "$pdf_report_file"
 
-    echo -e "${BLUE}[+] Report saved in ${report_file} and ${pdf_report_file}${NC}"
-    open ${pdf_report_file}
+# Clean up the temporary HTML file
+rm "$html_report"
+
+echo -e "${BLUE}[+] Report saved in ${report_file} and ${pdf_report_file}${NC}"
+open ${pdf_report_file}
 }
 
 # Function to load results from configuration file
