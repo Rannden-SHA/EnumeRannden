@@ -39,7 +39,7 @@ Welcome to **EnumeRannden**, a comprehensive automation script for penetration t
 Download the script:
 
 ```bash
-wget https://github.com/Rannden-SHA/EnumeRannden/blob/main/EnumeRannden.sh
+https://github.com/Rannden-SHA/EnumeRannden.git
 ```
 Give execution permissions:
 
