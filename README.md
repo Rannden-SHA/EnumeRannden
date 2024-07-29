@@ -49,7 +49,7 @@ chmod +x EnumeRannden/EnumeRannden.sh
 To install the necessary dependencies, run:
 
 ```bash
-.EnumeRannden/EnumeRannden.sh
+EnumeRannden/EnumeRannden.sh
 ```
 and select the option 17):
 
@@ -80,7 +80,7 @@ After setting up your session (configuring IP, creating directories, performing 
 To load a saved session, use the -c option followed by the configuration file name:
 
 ```bash
-./EnumeRannden.sh -c path_to_config_file.conf
+EnumeRannden/EnumeRannden.sh -c path_to_config_file.conf
 ```
 This loads all previously saved settings and results, allowing you to seamlessly continue your work from where you left off.
 
