@@ -44,12 +44,12 @@ git clone https://github.com/Rannden-SHA/EnumeRannden.git
 Give execution permissions:
 
 ```bash
-chmod +x /EnumeRannden/EnumeRannden.sh
+chmod +x EnumeRannden/EnumeRannden.sh
 ```
 To install the necessary dependencies, run:
 
 ```bash
-/EnumeRannden/EnumeRannden.sh -h
+EnumeRannden/EnumeRannden.sh -h
 ```
 This will guide you through checking and installing the required tools.
 
