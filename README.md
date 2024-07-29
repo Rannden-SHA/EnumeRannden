@@ -49,14 +49,9 @@ chmod +x EnumeRannden/EnumeRannden.sh
 To install the necessary dependencies, run:
 
 ```bash
-EnumeRannden/EnumeRannden.sh -h
-```
-This will guide you through checking and installing the required tools.
-
-Or run the script and select the option 17):
-```bash
 ./EnumeRannden.sh
 ```
+and select the option 17):
 
 ## Usage
 Run the script with the following command:
