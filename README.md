@@ -49,7 +49,7 @@ chmod +x EnumeRannden/EnumeRannden.sh
 To install the necessary dependencies, run:
 
 ```bash
-./EnumeRannden.sh
+.EnumeRannden/EnumeRannden.sh
 ```
 and select the option 17):
 
@@ -57,7 +57,7 @@ and select the option 17):
 Run the script with the following command:
 
 ```bash
-./EnumeRannden.sh [options]
+EnumeRannden/EnumeRannden.sh [options]
 ```
 The first time the script is executed, it will set up a symlink allowing future executions from anywhere by typing **enumerannden**.
 For future executions just run:
@@ -68,8 +68,6 @@ enumerannden [options]
 
 ## Options
 **-c** [file.conf] : Load a configuration file.
-
-**-h** : Show help.
 
 ## Configuration File
 ### What is the Configuration File?
